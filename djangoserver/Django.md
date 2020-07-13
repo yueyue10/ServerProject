@@ -27,8 +27,12 @@
 > URL传递参数
 配置'^detail/(?P<article_id>[0-9]+)$'
 'detail/<int:article_id>'
+
+> 数据表删除后重新创建
+>> delete from django_migrations where app='miniprogram';
+
 ### static配置
-`
+
 #### 3、STATIC文件还可以配置STATICFILES_DIRS，指定额外的静态文件存储位置。
     #  STATIC_URL的含义与MEDIA_URL类似。
 
@@ -61,3 +65,7 @@
         {% load staticfiles %}
        # <script src={% static "jquery-1.8.2.min.js" %}></script>
 `
+
+
+
+[1]:https://blog.csdn.net/hanglinux/article/details/75645756

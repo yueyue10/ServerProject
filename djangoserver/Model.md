@@ -1,11 +1,14 @@
 参考网站：[CSDN][1]
 
+## sqlite数据操作
+[cursor使用][2]
+
 ## 一. django 模型models 常用字段
 
 1、models.AutoField
 * 自增列 = int(11)
 * 如果没有的话，默认会生成一个名称为 id 的列
-* 如果要显式的自定义一个自增列，必须设置primary_key=True。
+* 如果要显式的自定义一个自增列，必须设置 primary_key=True。
 
 2、models.CharField　　
 * 字符串字段
@@ -193,3 +196,4 @@ class UserInfo(models.Model):
 
 
 [1]:https://blog.csdn.net/weixin_37773766/article/details/80330221
+[2]:https://blog.csdn.net/chengqiuming/article/details/78601209
