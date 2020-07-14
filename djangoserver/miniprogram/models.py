@@ -44,3 +44,35 @@ class MarkType(models.Model):
 
     def __str__(self):
         return self.mark_name
+
+
+# 书籍数据
+class Book(models.Model):
+    bookName = models.CharField(max_length=15)
+    image = models.URLField()
+    author = models.CharField(max_length=10)
+    year = models.CharField(max_length=10)
+    desc = models.TextField(null=True)
+    chapters = models.TextField(null=True)
+
+    def __str__(self):
+        return self.bookName
+
+
+# 书籍章节数据
+class BookChapter(models.Model):
+    bookName = models.CharField(max_length=15)
+    title = models.TextField(null=True)
+    paragraphs = models.TextField(null=True)
+
+    def __str__(self):
+        return self.bookName
+
+
+# 合称数据
+class MergeInfo(models.Model):
+    title = models.CharField(max_length=15)
+    data = models.TextField(null=True)
+
+    def __str__(self):
+        return self.title
