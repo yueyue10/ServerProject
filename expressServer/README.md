@@ -1,11 +1,17 @@
 # experssServer项目
 express服务项目
 
+>/doc/package.json 是备份文件，上传到服务器使用。因为服务器不需要动态更新服务，本地测试才需要。
+* 去掉了[browser-sync]
+* 去掉了[gulp]
+* 去掉了[gulp-nodemon]
+
+
 ### 生成api文档[参考][1]
 
 * `npm i apidoc -g      =全局安装`
 * `apidoc -i routes/ -o public/apidoc/      =生成api文档`
-* `gulp server      =启动gulp服务` 
+* `gulp server      =启动gulp服务(热更新服务)` 
 
 ### 其他知识
 * [使用cheerio爬取网页数据][2]
