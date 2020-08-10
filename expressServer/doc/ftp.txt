@@ -1,0 +1,18 @@
+参考：https://cloud.tencent.com/developer/article/1527705
+
+备份ftp配置文件  cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.backup.conf
+
+# 设置为用户主目录
+$ usermod -d /data/ftp [userName]
+
+# 重启服务器
+$ sudo systemctl restart vsftpd.service
+
+# 设置访问权限 chmod a-w 表示不可写(all-write)
+$ chmod a-w /data && chmod 777 -R /data
+
+
+---------------------------------------
+用户列表：
+ftpzyj  zhao1534748 /data
+zhaoyj  zhao1534748 /usr
