@@ -11,6 +11,7 @@ echo -e "---cd ${Express_Path} && git update && apidoc create doc--- \n"
 cd $Express_Path
 # --恢复本地修改，更新代码
 git checkout .
+git pull
 sleep 1
 # --移动doc下的package.json到项目根目录下
 sudo mv doc/package.json ./
@@ -39,7 +40,7 @@ getForever(){
 
 # 如果文件夹中是否存在www，存在表示进入文件夹成功
 if [ $express_file = "www" ];then
-   echo -e "---cd ${Express_Path}bin/ && forever start server--- \n"
+   echo -e "---\n cd ${Express_Path}bin/ && forever start server--- \n"
    rm -rf /root/.forever/forever.log
    getForever
    www_result=$?
