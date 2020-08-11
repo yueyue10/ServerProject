@@ -6,10 +6,14 @@ time_str=$(date "+%Y-%m-%d %H:%M:%S")
 echo ---current time $time_str---
 # 命令路径
 Express_Path='/data/project/ServerProject/expressServer/'
-# 跳转到expressServer目录下，生成api文档
-echo -e "---cd ${Express_Path} && apidoc create doc--- \n"
+# 跳转到expressServer目录下，更新生成api文档
+echo -e "---cd ${Express_Path} && git update && apidoc create doc--- \n"
 cd $Express_Path
-git pull
+# --恢复本地修改，更新代码
+git checkout .
+sleep 1
+# --移动doc下的package.json到项目根目录下
+sudo mv doc/package.json ./
 apidoc -i routes/ -o public/apidoc/
 sleep 1
 # 跳转到expressServer/bin目录下，查找www文件
