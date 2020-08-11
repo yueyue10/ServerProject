@@ -10,7 +10,7 @@ var html = require('./html.js')
  * @apiDescription 下载文件
  * @apiName download
  * @apiGroup demo
- * @apiSampleRequest http://localhost:3000/demo/download
+ * @apiSampleRequest http://81.68.145.189:3000/demo/download
  * @apiVersion 0.0.0
  */
 router.get('/download', function (req, res, next) {
@@ -35,7 +35,7 @@ router.get('/download', function (req, res, next) {
  *  {
  *    "url" : ""
  *  }
- * @apiSampleRequest http://localhost:3000/demo/setUrl
+ * @apiSampleRequest http://81.68.145.189:3000/demo/setUrl
  * @apiVersion 0.0.0
  */
 router.get('/setUrl*', function (req, res, next) {
@@ -67,7 +67,7 @@ router.get('/setUrl*', function (req, res, next) {
  *  {
  *    "url" : ""
  *  }
- * @apiSampleRequest http://localhost:3000/demo/getUrl
+ * @apiSampleRequest http://81.68.145.189:3000/demo/getUrl
  * @apiVersion 0.0.0
  */
 router.get('/getUrl*', function (req, res, next) {
@@ -92,7 +92,7 @@ router.get('/getUrl*', function (req, res, next) {
  *  {
  *    "url" : ""
  *  }
- * @apiSampleRequest http://localhost:3000/demo/getWeiXinHtml
+ * @apiSampleRequest http://81.68.145.189:3000/demo/getWeiXinHtml
  * @apiVersion 0.0.0
  */
 router.get('/getWeiXinHtml*', function (req, res, next) {
