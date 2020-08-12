@@ -7,7 +7,7 @@
   },
   "apidoc": {
     "title": "接口文档",
-    "url": "http://localhost:3000/apidoc"
+    "url": "http://localhost:3000"
   },
   "dependencies": {
     "browser-sync": "^2.26.10",
