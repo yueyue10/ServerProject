@@ -20,7 +20,7 @@ class MySqlite(object):
                 # 获取插入数据库的标识
                 sql1_result = self.conn.execute(
                     "select * from miniprogram_poetryflag where poetry_type=:name", {"name": '诗词排行榜'})
-                sql1_result_index = sql1_result.fetchone()[0]
+                sql1_result_index = sql1_result.fetchone()[1]
                 print(sql1, sql1_result.fetchone(), sql1_result_index)
                 self.conn.commit()
                 for poetryObj in rankObj['poetrys']:
