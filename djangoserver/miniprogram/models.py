@@ -72,7 +72,9 @@ class BookChapter(models.Model):
 # 合称数据
 class MergeInfo(models.Model):
     title = models.CharField(max_length=15)
+    desc = models.TextField(null=True)
     data = models.TextField(null=True)
+    flag = models.CharField(max_length=10, default='flag')
 
     def __str__(self):
         return self.title

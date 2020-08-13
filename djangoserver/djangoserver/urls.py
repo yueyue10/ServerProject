@@ -19,8 +19,6 @@ from django.urls import include
 from django.urls import path
 from rest_framework.documentation import include_docs_urls
 
-from djangoserver.session import SessionAuthentication
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('poetry/', include('miniprogram.urls')),
