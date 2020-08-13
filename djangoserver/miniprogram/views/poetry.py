@@ -1,7 +1,6 @@
 from django.core.paginator import Paginator
 
 from djangoserver import result
-
 from miniprogram import models
 
 
@@ -21,7 +20,7 @@ def poetry_list(request, **kw):
         page_list = paginator.page(page_index)
         poetry_obj = {
             'count': page_num,
-            'current': page_index,
+            'current': int(page_index),
             'list': list(page_list)
         }
         return result.success(poetry_obj)
@@ -83,12 +82,25 @@ def merge_info(request, **kw):
 
 # 获取排行榜列表数据
 def rank_poetry(request, **kw):
+    page_num = request.GET.get('pageNum')
+    page_index = request.GET.get('pageIndex')
     poetry_flag_data = models.PoetryFlag.objects.filter(poetry_type='诗词排行榜').values('poetry_type', 'poetry_flag')
     poetry_flag = poetry_flag_data[0]['poetry_flag']
     print('poetry_flag', poetry_flag)
     poetry_list_data = models.Poetry.objects.filter(poetry_flag=poetry_flag).values('title', 'time', 'author',
                                                                                     'content', 'pic', 'mark_index')
-    return result.success(list(poetry_list_data))
+    if page_num and page_index:
+        paginator = Paginator(poetry_list_data, page_num)
+        page_num = paginator.num_pages
+        page_list = paginator.page(page_index)
+        poetry_obj = {
+            'count': page_num,
+            'current': int(page_index),
+            'list': list(page_list)
+        }
+        return result.success(poetry_obj)
+    else:
+        return result.success(list(poetry_list_data))
 
 
 # 获取书籍数据
