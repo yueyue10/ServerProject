@@ -3,11 +3,11 @@ var router = express.Router();
 var path = require('path');
 var fs = require("fs");
 var html = require('./html.js')
+const db = require("../db"); //引入数据库封装模块
 
-/* 下载文件 */
 /**
- * @api {get} /demo/download 下载文件
  * @apiDescription 下载文件
+ * @api {get} /demo/download 下载文件
  * @apiName download
  * @apiGroup demo
  * @apiSampleRequest http://81.68.145.189:3000/demo/download
@@ -23,10 +23,9 @@ router.get('/download', function (req, res, next) {
     f.pipe(res);
 });
 
-/* 写入文件 */
 /**
- * @api {get} /demo/setUrl 设置url
- * @apiDescription 设置url
+ * @apiDescription 设置本地url
+ * @api {get} /demo/setUrl 设置本地url
  * @apiName setUrl
  * @apiGroup demo
  * @apiParam {string} url 路径
@@ -56,10 +55,9 @@ router.get('/setUrl*', function (req, res, next) {
     res.end(JSON.stringify(result));
 });
 
-/* 读取文件 */
 /**
- * @api {get} /demo/getUrl 获取url
- * @apiDescription 获取url
+ * @apiDescription 获取本地保存的url
+ * @api {get} /demo/getUrl 获取本地保存的url
  * @apiName getUrl
  * @apiGroup demo
  * @apiSuccess {json} result
@@ -80,10 +78,31 @@ router.get('/getUrl*', function (req, res, next) {
     res.end(fileStr);
 });
 
-/* 获取网页内容 */
 /**
- * @api {get} /demo/getWeiXinHtml 获取网页内容
- * @apiDescription 获取网页内容
+ * @apiDescription 获取mysql数据
+ * @api {get} /demo/mysql/data 获取mysql数据
+ * @apiName /mysql/data
+ * @apiGroup demo
+ * @apiSuccess {json} result
+ * @apiSuccessExample {json} Success-Response:
+ *  {
+ *    "url" : ""
+ *  }
+ * @apiSampleRequest http://81.68.145.189:3000/demo/mysql/data
+ * @apiVersion 0.0.0
+ */
+router.get('/mysql/data', function (req, res, next) {
+    //查询users表
+    db.query("SELECT * FROM account", [], function (results, fields) {
+        console.log(results);
+        res.json(results);
+    })
+});
+
+
+/**
+ * @apiDescription 获取微信公众号网页内容
+ * @api {get} /demo/getWeiXinHtml 获取微信公众号网页内容
  * @apiName getWeiXinHtml
  * @apiGroup demo
  * @apiParam {string} url 路径
