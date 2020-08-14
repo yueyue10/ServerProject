@@ -10,3 +10,5 @@ fuser -v -n tcp 8080
 > 杀死占用8080端口的进程：
 kill -s 9 1154(自己的进程号)
 
+shell使用nohup命令：
+https://www.cnblogs.com/suanec/p/7129164.html
