@@ -2,5 +2,8 @@
 https://www.cnblogs.com/yangzhaon/p/10982232.html
 
 python manage.py flush  -清空所有数据
-
 上面的方法不管用，直接删除掉【db.sqlite3】重新配置数据
+
+
+django项目部署到服务器：
+https://www.jianshu.com/p/36ef6557c910

@@ -1,0 +1,4 @@
+python3安装：
+https://www.cnblogs.com/lemon-feng/p/11208435.html
+安装遇到问题：
+https://blog.csdn.net/qq_36062399/article/details/84592252
