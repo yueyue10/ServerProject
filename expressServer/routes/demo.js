@@ -6,11 +6,11 @@ var html = require('./html.js')
 const db = require("../db"); //引入数据库封装模块
 
 /**
- * @apiDescription 下载文件
  * @api {get} /demo/download 下载文件
+ * @apiDescription 下载文件
  * @apiName download
  * @apiGroup demo
- * @apiSampleRequest http://81.68.145.189:3000/demo/download
+ * @apiSampleRequest http://localhost:3000/demo/download
  * @apiVersion 0.0.0
  */
 router.get('/download', function (req, res, next) {
@@ -24,20 +24,16 @@ router.get('/download', function (req, res, next) {
 });
 
 /**
- * @apiDescription 设置本地url
  * @api {get} /demo/setUrl 设置本地url
+ * @apiDescription 设置本地url
  * @apiName setUrl
  * @apiGroup demo
  * @apiParam {string} url 路径
  * @apiSuccess {json} result
- * @apiSuccessExample {json} Success-Response:
- *  {
- *    "url" : ""
- *  }
- * @apiSampleRequest http://81.68.145.189:3000/demo/setUrl
+ * @apiSampleRequest http://localhost:3000/demo/setUrl
  * @apiVersion 0.0.0
  */
-router.get('/setUrl*', function (req, res, next) {
+router.get('/setUrl', function (req, res, next) {
     console.log(req.method, req.query);
     let result = {msg: '参数错误'}
     if (req.query.url) {
@@ -65,7 +61,7 @@ router.get('/setUrl*', function (req, res, next) {
  *  {
  *    "url" : ""
  *  }
- * @apiSampleRequest http://81.68.145.189:3000/demo/getUrl
+ * @apiSampleRequest http://localhost:3000/demo/getUrl
  * @apiVersion 0.0.0
  */
 router.get('/getUrl*', function (req, res, next) {
@@ -84,11 +80,7 @@ router.get('/getUrl*', function (req, res, next) {
  * @apiName /mysql/data
  * @apiGroup demo
  * @apiSuccess {json} result
- * @apiSuccessExample {json} Success-Response:
- *  {
- *    "url" : ""
- *  }
- * @apiSampleRequest http://81.68.145.189:3000/demo/mysql/data
+ * @apiSampleRequest http://localhost:3000/demo/mysql/data
  * @apiVersion 0.0.0
  */
 router.get('/mysql/data', function (req, res, next) {
@@ -107,11 +99,7 @@ router.get('/mysql/data', function (req, res, next) {
  * @apiGroup demo
  * @apiParam {string} url 路径
  * @apiSuccess {json} result
- * @apiSuccessExample {json} Success-Response:
- *  {
- *    "url" : ""
- *  }
- * @apiSampleRequest http://81.68.145.189:3000/demo/getWeiXinHtml
+ * @apiSampleRequest http://localhost:3000/demo/getWeiXinHtml
  * @apiVersion 0.0.0
  */
 router.get('/getWeiXinHtml*', function (req, res, next) {

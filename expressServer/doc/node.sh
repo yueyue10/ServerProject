@@ -12,6 +12,7 @@ cd $Express_Path
 # --恢复本地修改，更新代码
 git checkout .
 git pull
+npm install
 sleep 1
 # --移动doc下的package.json到项目根目录下
 sudo mv doc/package.json ./
