@@ -29,4 +29,3 @@ WORKON_HOME：E:\Users\Python\Libs
 5.快速删除虚拟环境 rmvirtualenv PythonPro
 6.查看所有创建的虚拟环境 lsvirtualenv
 -----------------------------------
-

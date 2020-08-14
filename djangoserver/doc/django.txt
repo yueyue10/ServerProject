@@ -11,3 +11,6 @@ https://www.jianshu.com/p/36ef6557c910
 
 服务器更新sqlite版本：
 https://blog.csdn.net/weixin_43336281/article/details/100055435
+
+Django应用部署：
+https://blog.csdn.net/baidu_35085676/article/details/77160040
