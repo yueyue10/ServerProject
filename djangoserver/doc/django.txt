@@ -1,9 +1,13 @@
 连接mysql数据库
 https://www.cnblogs.com/yangzhaon/p/10982232.html
 
-python manage.py flush  -清空所有数据
+> 清空所有数据
+python manage.py flush
 上面的方法不管用，直接删除掉【db.sqlite3】重新配置数据
 
 
 django项目部署到服务器：
 https://www.jianshu.com/p/36ef6557c910
+
+服务器更新sqlite版本：
+https://blog.csdn.net/weixin_43336281/article/details/100055435

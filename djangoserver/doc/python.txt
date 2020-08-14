@@ -2,3 +2,31 @@ python3安装：
 https://www.cnblogs.com/lemon-feng/p/11208435.html
 安装遇到问题：
 https://blog.csdn.net/qq_36062399/article/details/84592252
+Python 导出项目依赖:
+https://www.cnblogs.com/3sss-ss-s/p/10958262.html
+
+
+> 安装requirements.txt下所有安装包
+pip3 install -r requirements.txt
+
+
+> python导出安装的安装包
+pip freeze >requirements.txt
+
+
+>查看安装的Python插件
+pip list
+
+
+-----------------------------------
+集中式虚拟环境管理工具
+1.安装工具命令(window环境) pip install virtualenvwrapper-win
+1.1 在环境变量中配置( WORKON_HOME是虚拟环境的目录地址)：
+WORKON_HOME：E:\Users\Python\Libs
+2.快速创建虚拟环境并激活 mkvirtualenv venv1
+3.快速在多个虚拟环境中切换 workon venv2
+4.快速关闭虚拟环境 deactivate
+5.快速删除虚拟环境 rmvirtualenv PythonPro
+6.查看所有创建的虚拟环境 lsvirtualenv
+-----------------------------------
+
