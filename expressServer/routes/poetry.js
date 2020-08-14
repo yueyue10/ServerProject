@@ -9,7 +9,6 @@ const fs = require("fs");
  * @apiName /grade/poetryList
  * @apiGroup poetry
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/poetry/grade/poetryList
  * @apiVersion 0.0.0
  */
 router.get("/grade/poetryList", function (req, res, next) {
@@ -25,7 +24,6 @@ router.get("/grade/poetryList", function (req, res, next) {
  * @apiName /rank/poetryList
  * @apiGroup poetry
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/poetry/rank/poetryList
  * @apiVersion 0.0.0
  */
 router.get("/rank/poetryList", function (req, res, next) {
@@ -41,7 +39,6 @@ router.get("/rank/poetryList", function (req, res, next) {
  * @apiName /mark/typeList
  * @apiGroup poetry
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/poetry/mark/typeList
  * @apiVersion 0.0.0
  */
 router.get("/mark/typeList", function (req, res, next) {
@@ -57,7 +54,6 @@ router.get("/mark/typeList", function (req, res, next) {
  * @apiName /mark/poetryList
  * @apiGroup poetry
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/poetry/mark/poetryList
  * @apiVersion 0.0.0
  */
 router.get("/mark/poetryList", function (req, res, next) {
@@ -73,7 +69,6 @@ router.get("/mark/poetryList", function (req, res, next) {
  * @apiName /hecheng/infos
  * @apiGroup poetry
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/poetry/hecheng/infos
  * @apiVersion 0.0.0
  */
 router.get("/hecheng/infos", function (req, res, next) {
@@ -89,7 +84,6 @@ router.get("/hecheng/infos", function (req, res, next) {
  * @apiName /oldbook/infos
  * @apiGroup poetry
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/poetry/oldbook/infos
  * @apiVersion 0.0.0
  */
 router.get("/oldbook/infos", function (req, res, next) {
@@ -105,7 +99,6 @@ router.get("/oldbook/infos", function (req, res, next) {
  * @apiName /oldbook/chapters
  * @apiGroup poetry
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/poetry/oldbook/chapters
  * @apiVersion 0.0.0
  */
 router.get("/oldbook/chapters", function (req, res, next) {
@@ -121,7 +114,6 @@ router.get("/oldbook/chapters", function (req, res, next) {
  * @apiName /oldbook/content
  * @apiGroup poetry
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/poetry/oldbook/content
  * @apiVersion 0.0.0
  */
 router.get("/oldbook/content", function (req, res, next) {

@@ -10,7 +10,6 @@ const db = require("../db"); //引入数据库封装模块
  * @apiDescription 下载文件
  * @apiName download
  * @apiGroup demo
- * @apiSampleRequest http://localhost:3000/demo/download
  * @apiVersion 0.0.0
  */
 router.get('/download', function (req, res, next) {
@@ -30,7 +29,6 @@ router.get('/download', function (req, res, next) {
  * @apiGroup demo
  * @apiParam {string} url 路径
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/demo/setUrl
  * @apiVersion 0.0.0
  */
 router.get('/setUrl', function (req, res, next) {
@@ -61,7 +59,6 @@ router.get('/setUrl', function (req, res, next) {
  *  {
  *    "url" : ""
  *  }
- * @apiSampleRequest http://localhost:3000/demo/getUrl
  * @apiVersion 0.0.0
  */
 router.get('/getUrl*', function (req, res, next) {
@@ -80,7 +77,6 @@ router.get('/getUrl*', function (req, res, next) {
  * @apiName /mysql/data
  * @apiGroup demo
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/demo/mysql/data
  * @apiVersion 0.0.0
  */
 router.get('/mysql/data', function (req, res, next) {
@@ -99,7 +95,6 @@ router.get('/mysql/data', function (req, res, next) {
  * @apiGroup demo
  * @apiParam {string} url 路径
  * @apiSuccess {json} result
- * @apiSampleRequest http://localhost:3000/demo/getWeiXinHtml
  * @apiVersion 0.0.0
  */
 router.get('/getWeiXinHtml*', function (req, res, next) {

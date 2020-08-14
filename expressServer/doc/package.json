@@ -7,7 +7,7 @@
   },
   "apidoc": {
     "title": "接口文档",
-    "url": "http://81.68.145.189:3000"
+    "url": "https://zhaoyj.work/express"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
