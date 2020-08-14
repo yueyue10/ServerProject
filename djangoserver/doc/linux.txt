@@ -1,0 +1,12 @@
+端口占用：
+https://www.jb51.net/article/167072.htm
+
+> 查看8080端口是否被占用
+netstat -anp | grep 8080
+
+> 查看占用8080端口的进程：
+fuser -v -n tcp 8080
+
+> 杀死占用8080端口的进程：
+kill -s 9 1154(自己的进程号)
+
