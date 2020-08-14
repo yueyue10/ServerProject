@@ -18,3 +18,5 @@ https://blog.csdn.net/baidu_35085676/article/details/77160040
 defined in mysite.urls错误:
 https://blog.csdn.net/yy168888/article/details/103198444
 
+> 使用uwsgi启动django服务
+uwsgi --ini uwsgi.ini
