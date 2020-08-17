@@ -28,3 +28,6 @@ WORKON_HOME：E:\Users\Python\Libs
 5.快速删除虚拟环境 rmvirtualenv PythonPro
 6.查看所有创建的虚拟环境 lsvirtualenv
 -----------------------------------
+
+-------上面的虚拟环境的作用-------
+独立管理安装包,使用[pip freeze]命令可以导出所有需要的依赖

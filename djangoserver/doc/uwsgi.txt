@@ -1,2 +1,14 @@
 uwsgi服务启动(start)停止(stop)重新装载(reload):
 https://blog.csdn.net/weixin_39584758/article/details/80356000
+
+> 启动uwsgi服务
+uwsgi --ini uwsgi.ini
+
+> 重启uwsgi服务
+uwsgi --reload uwsgi/uwsgi.pid
+
+> 查看uwsgi状态
+uwsgi --connect-and-read uwsgi/uwsgi.status
+
+> 停止uwsgi服务
+uwsgi --stop uwsgi/uwsgi.pid
