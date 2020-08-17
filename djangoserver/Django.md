@@ -14,6 +14,8 @@
 `迁移：python manage.py migrate`
 #### 5、创建超级用户
 ` python manage.py createsuperuser `
+#### 50、生成静态文件
+`python  manage.py collectstatic`
 #### 6、Django 项目环境终端
 `  python manage.py shell `
 #### 7、Django 项目数据库环境终端

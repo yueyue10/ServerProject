@@ -27,3 +27,5 @@ uwsgi --ini uwsgi.ini
 >uwsgi后台运行/背后运行/守护运行的方法
 uwsgi -d --ini uwsgi.ini
 
+>django生成静态文件
+python  manage.py collectstatic
