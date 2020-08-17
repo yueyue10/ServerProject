@@ -17,7 +17,6 @@ pip freeze >requirements.txt
 >查看安装的Python插件
 pip list
 
-
 -----------------------------------
 集中式虚拟环境管理工具
 1.安装工具命令(window环境) pip install virtualenvwrapper-win
