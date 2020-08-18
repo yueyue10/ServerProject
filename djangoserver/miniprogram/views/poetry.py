@@ -46,12 +46,12 @@ def grade_poetry(request, **kw):
     grade_name: 年级名称-一年级上册
     """
     grade_name = request.GET.get('grade_name')
-    print('grade_name', grade_name)
+    # print('grade_name', grade_name)
     if not grade_name:
         return result.error('grade_name参数错误', {})
     grade_types = GradeType.objects.filter(grade_name=grade_name).values('poetry_flag')
     poetry_flag = grade_types[0]['poetry_flag']
-    print('poetry_flag', poetry_flag)
+    # print('poetry_flag', poetry_flag)
     poetry_list_data = Poetry.objects.filter(poetry_flag=poetry_flag)
     obj = ResultPagination()
     page_list = obj.paginate_queryset(poetry_list_data, request)
@@ -77,12 +77,12 @@ def mark_poetry(request, **kw):
     mark_name: 分类名称-田园诗
     """
     mark_name = request.GET.get('mark_name')
-    print('mark_name', mark_name)
+    # print('mark_name', mark_name)
     if not mark_name:
         return result.error('mark_name参数错误', {})
     mark_flag_data = MarkType.objects.filter(mark_name=mark_name).values('poetry_flag')
     poetry_flag = mark_flag_data[0]['poetry_flag']
-    print('poetry_flag', poetry_flag)
+    # print('poetry_flag', poetry_flag)
     poetry_list_data = Poetry.objects.filter(poetry_flag=poetry_flag)
     obj = ResultPagination()
     page_list = obj.paginate_queryset(poetry_list_data, request)
@@ -98,7 +98,7 @@ def merge_info(request, **kw):
     merge_flag: 合称标识-史书典籍
     """
     merge_flag = request.GET.get('merge_flag')
-    print('merge_flag', merge_flag)
+    # print('merge_flag', merge_flag)
     if not merge_flag:
         return result.error('merge_flag参数错误', {})
     merge_data = MergeInfo.objects.filter(flag=merge_flag)
@@ -113,7 +113,7 @@ def rank_poetry(request, **kw):
     """
     poetry_flag_data = models.PoetryFlag.objects.filter(poetry_type='诗词排行榜').values('poetry_type', 'poetry_flag')
     poetry_flag = poetry_flag_data[0]['poetry_flag']
-    print('poetry_flag', poetry_flag)
+    # print('poetry_flag', poetry_flag)
     poetry_list_data = Poetry.objects.filter(poetry_flag=poetry_flag)
     obj = ResultPagination()
     page_list = obj.paginate_queryset(poetry_list_data, request)
@@ -129,11 +129,11 @@ def book_info(request, **kw):
     bookName: 书籍名称-《三国演义》
     """
     book_name = request.GET.get('bookName')
-    print('bookName', book_name)
+    # print('bookName', book_name)
     if not book_name:
         return result.error('bookName参数错误', {})
     book_data = Book.objects.filter(bookName=book_name)
-    print('book_data', book_data)
+    # print('book_data', book_data)
     book_ser = BookSerializer(book_data, many=True)
     return Response(book_ser.data)
 
@@ -147,7 +147,7 @@ def book_chapter(request, **kw):
     """
     book_name = request.GET.get('bookName')
     chapter = request.GET.get('chapter')
-    print('bookName', book_name, chapter)
+    # print('bookName', book_name, chapter)
     if not book_name:
         return result.error('bookName参数错误', {})
     if not chapter:

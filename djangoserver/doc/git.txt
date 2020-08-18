@@ -1,0 +1,5 @@
+git查看commit提交记录详情
+https://www.cnblogs.com/jaspersong/p/11652649.html
+
+git config --global user.email "1650432983@qq.com"
+git config --global user.name "zhaoyj"
