@@ -22,6 +22,6 @@ from rest_framework.documentation import include_docs_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('poetry/', include('miniprogram.urls')),
-    url(r'api-auth', include("rest_framework.urls", namespace="reset_framework")),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'docs/', include_docs_urls(title='接口文档', authentication_classes=[], permission_classes=[])),
 ]
