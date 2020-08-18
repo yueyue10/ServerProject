@@ -1,2 +1,4 @@
 /djangoserver/.idea
 /expressServer/public/apidoc
+/djangoserver/collect_static
+.idea
