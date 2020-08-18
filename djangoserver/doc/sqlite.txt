@@ -1,0 +1,6 @@
+-- 更新 ' 为 "
+update miniprogram_poetry set  content =replace(content,'''','"') where poetry_flag = 1;
+select * from miniprogram_poetry where poetry_flag = 1;
+
+-- 参考 https://www.cnblogs.com/xiaopengblog/p/5578384.html
+-- 参考 https://www.cnblogs.com/mzy-google/p/4569726.html
