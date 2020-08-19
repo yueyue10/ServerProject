@@ -17,15 +17,22 @@ class MySqlite(object):
                 chapter['chapters'])
             self.conn.execute(sql1)
             self.conn.commit()
-            print(sql1)
+            # print(sql1)
         with open('content.json', 'r', encoding='utf-8') as contentStr:
             content = json.load(contentStr)
             for chapterObj in content['chapters']:
+                paragraphs = json.dumps(chapterObj['paragraphs'])
+                print(type(paragraphs), paragraphs)
                 sql2 = 'insert into miniprogram_bookchapter(bookName, title, paragraphs) values("%s","%s","%s")' % (
-                    content['name'], chapterObj['title'], chapterObj['paragraphs'])
+                    content['name'], chapterObj['title'], '')
                 self.conn.execute(sql2)
                 self.conn.commit()
                 print(sql2)
+                sql3 = "update miniprogram_bookchapter set paragraphs ='%s' where title == '%s';" % (
+                    paragraphs, chapterObj['title'])
+                self.conn.execute(sql3)
+                self.conn.commit()
+                print(sql3)
         self.conn.close()
 
 

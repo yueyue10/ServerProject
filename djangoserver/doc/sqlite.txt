@@ -1,0 +1,6 @@
+sqlite数据库清空，并且ID从0开始
+https://www.cnblogs.com/afeng7882999/p/3973523.html
+
+
+update sqlite_sequence set seq ='0' where name ='miniprogram_bookchapter';
+update sqlite_sequence set seq ='0' where name ='miniprogram_book';
