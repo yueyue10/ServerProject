@@ -78,3 +78,36 @@ class MergeInfo(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# 热映电影
+class HotMovie(models.Model):
+    date = models.DateField(auto_now=True)
+    movieId = models.IntegerField(null=True)
+    title = models.CharField(max_length=15)
+    image = models.TextField(null=True)
+    duration = models.TextField(null=True)
+    score = models.TextField(null=True)
+    mtype = models.TextField(null=True)
+    actor = models.TextField(null=True)
+
+    def __str__(self):
+        return self.title
+
+
+# 电影数据
+class Movie(models.Model):
+    flag = models.CharField(max_length=10)
+    movie_index = models.IntegerField(null=True)
+    title = models.CharField(max_length=15)
+    image = models.TextField(null=True)
+    director = models.TextField(null=True)
+    actor = models.TextField(null=True)
+    area = models.TextField(null=True)
+    mtime = models.TextField(null=True)
+    mtype = models.TextField(null=True)
+    score = models.TextField(null=True)
+    comment = models.TextField(null=True)
+
+    def __str__(self):
+        return self.title
