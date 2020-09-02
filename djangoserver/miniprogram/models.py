@@ -101,6 +101,7 @@ class Movie(models.Model):
     movie_index = models.IntegerField(null=True)
     title = models.CharField(max_length=15)
     image = models.TextField(null=True)
+    subject = models.TextField(null=True)
     director = models.TextField(null=True)
     actor = models.TextField(null=True)
     area = models.TextField(null=True)
