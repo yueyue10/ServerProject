@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from rest_framework.pagination import LimitOffsetPagination
 
-from miniprogram.models import Poetry, GradeType, MarkType, MergeInfo, Book, BookChapter
+from miniprogram.models import Poetry, GradeType, MarkType, MergeInfo, Book, BookChapter, Movie
 
 
 class ResultPagination(LimitOffsetPagination):
@@ -56,3 +56,10 @@ class BookChapterSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookChapter
         fields = ('paragraphs', 'title', 'bookName')
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = (
+        'flag', 'movie_index', 'title', 'image', 'director', 'actor', 'area', 'mtime', 'mtype', 'score', 'comment')

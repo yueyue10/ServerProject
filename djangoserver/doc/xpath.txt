@@ -1,0 +1,2 @@
+查看div的标签名称
+print(info.tag)

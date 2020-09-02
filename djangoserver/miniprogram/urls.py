@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.urls import path
 
-from miniprogram.views import poetry, index
+from miniprogram.views import poetry, index, movie
 
 urlpatterns = [
     path('index/', index.index),
@@ -19,4 +19,7 @@ urlpatterns = [
     path(r'rank/poetry', poetry.rank_poetry),
     path(r'book/info', poetry.book_info),
     path(r'book/chapter', poetry.book_chapter),
+    path(r'movie/top250', movie.top250),
+    path(r'movie/showing', movie.movie_hot),
+    path(r'movie/detail', movie.movie_detail),
 ]
