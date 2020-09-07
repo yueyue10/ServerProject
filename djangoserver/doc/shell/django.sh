@@ -33,7 +33,7 @@ sleep 1
 echo "---python3 manage.py collectstatic---"
 python3 manage.py collectstatic
 # uwsgi启动django服务
-uwsgi_path=${Django_path}/djangoserver/uwsgi.ini
+uwsgi_path=${Django_path}/uwsgi/uwsgi.ini
 finishPort
 echo -e "\n\n ---uwsgi start django server---  \n\n"
 uwsgi --ini ${uwsgi_path}
