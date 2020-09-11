@@ -83,7 +83,9 @@ class MovieDetailSpider(object):
         movie_top_left = movie_top.xpath('./div[@class="subject clearfix"]')[0]
 
         score = movie_top.xpath('./div[@id="interest_sectl"]/div[@class="rating_wrap clearbox"]/'
-                                'div[@class="rating_self clearfix"]/strong/text()')[0]
+                                'div[@class="rating_self clearfix"]/strong/text()')
+        # print(score)
+        if score: score = score[0]
         intro = article_html.xpath('./div[@class="related-info"]/div[@class="indent"]/span/text()')[0]
         image = movie_top_left.xpath('./div[@id="mainpic"]/a/img/@src')[0]
         title = com_html.xpath('//*[@id="content"]/h1/span/text()')
@@ -140,8 +142,13 @@ class MovieDetailSpider(object):
     def get_movie_actors(article_html):
         actor_list = []
         actors = article_html.xpath('./div[@id="celebrities"]/ul/li')
-        for actor in actors:
-            image_style = actor.xpath('./a/div/@style')[0]
+        for index, actor in enumerate(actors):
+            child_list = actor.xpath('./*')
+            if not child_list:
+                break
+            image_style = actor.xpath('./a/div/@style')
+            # print(index, image_style)
+            image_style = image_style[0]
             image = image_style.replace('background-image: url(', '').replace(')', '')
             # print(image_style)
             actor_name = actor.xpath('./div/span[@class="name"]/a/text()')[0]
@@ -257,5 +264,5 @@ class MovieDetailSpider(object):
 
 
 if __name__ == '__main__':
-    spider = MovieDetailSpider()
+    spider = MovieDetailSpider('34433857')
     spider.start()
