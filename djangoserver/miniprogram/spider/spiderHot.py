@@ -35,6 +35,7 @@ class HotMovieSpider(object):
     def start(self):
         movieList = self.get_info_from_movie(self.url)
         movieList_json = json.dumps(movieList, default=lambda obj: obj.__dict__, sort_keys=True, indent=4)
+        # print(movieList)
         # self.save_json_in_json("电影热映", movieList_json)
         # print(colorListBean_json)
         return movieList_json
@@ -45,7 +46,9 @@ class HotMovieSpider(object):
         com_html = etree.HTML(html_detail)
         movieLis = com_html.xpath('//*[@id="nowplaying"]/div[@class="mod-bd"]/ul/li')
         movieList = []
-        for movieItem in movieLis:
+        for index, movieItem in enumerate(movieLis):
+            if index == 6:
+                break
             subject = movieItem.xpath('./@data-subject')[0]
             title = movieItem.xpath('./@data-title')[0]
             director = movieItem.xpath('./@data-director')[0]
@@ -76,5 +79,5 @@ class HotMovieSpider(object):
 
 
 if __name__ == '__main__':
-    spider = HotMovieSpider(HOT_Url)
+    spider = HotMovieSpider()
     spider.start()
