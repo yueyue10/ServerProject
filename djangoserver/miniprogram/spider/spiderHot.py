@@ -37,19 +37,19 @@ class HotMovieSpider(object):
 
     def __init__(self):
         self.today = datetime.date.today()
-        self.conn = sqlite3.connect('../../db.sqlite3')
-        print('open database successfully')
+        # self.conn = sqlite3.connect('../../db.sqlite3')
+        # print('open database successfully')
 
     def start(self):
         movie_hot_in_db = self.get_db_movie_hot()
         if movie_hot_in_db:
-            self.conn.close()
+            # self.conn.close()
             movieHot = movie_hot_in_db[0]
             movieList = json.loads(movieHot.movies)
         else:
             movieList = self.get_info_from_movie(self.url)
             self.save_db_movie(movieList)
-            self.conn.close()
+            # self.conn.close()
         movieList_json = json.dumps(movieList, default=lambda obj: obj.__dict__, sort_keys=True, indent=4)
         # print(movieList)
         # self.save_json_in_json("电影热映", movieList_json)

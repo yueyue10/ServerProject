@@ -68,14 +68,14 @@ class MovieDetailSpider(object):
     def __init__(self, movie_id=''):
         self.movie_id = movie_id
         if movie_id: self.url = Detail_Url.format(movie_id)
-        self.conn = sqlite3.connect('../../db.sqlite3')
-        print('open database successfully')
+        # self.conn = sqlite3.connect('../../db.sqlite3')
+        # print('open database successfully')
 
     def start(self):
         print("start")
         movie_in_db = self.get_db_movie()
         if movie_in_db:
-            self.conn.close()
+            # self.conn.close()
             movieBean = movie_in_db[0]
             movieBean.actors = json.loads(movieBean.actors)
             movieBean.photos = json.loads(movieBean.photos)
@@ -84,7 +84,7 @@ class MovieDetailSpider(object):
             movieBean = self.get_info_from_movie(self.url)
             # print("movieBean", movieBean)
             self.save_db_movie(movieBean)
-            self.conn.close()
+            # self.conn.close()
         movieBean_json = json.dumps(movieBean, default=lambda obj: obj.__dict__, sort_keys=True, indent=4)
         # print("movieBean_json", movieBean_json)
         return movieBean_json
