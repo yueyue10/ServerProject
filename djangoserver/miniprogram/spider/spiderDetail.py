@@ -2,7 +2,7 @@ import codecs
 import json
 import random
 import time
-
+import sqlite3
 import requests
 from lxml import etree
 
@@ -66,13 +66,68 @@ class MovieDetailSpider(object):
     url = Detail_Url.format(simple_id)
 
     def __init__(self, movie_id=''):
+        self.movie_id = movie_id
         if movie_id: self.url = Detail_Url.format(movie_id)
+        self.conn = sqlite3.connect('../../db.sqlite3')
+        print('open database successfully')
 
     def start(self):
-        movieBean = self.get_info_from_movie(self.url)
+        print("start")
+        movie_in_db = self.get_db_movie()
+        if movie_in_db:
+            self.conn.close()
+            movieBean = movie_in_db[0]
+            movieBean.actors = json.loads(movieBean.actors)
+            movieBean.photos = json.loads(movieBean.photos)
+            movieBean.tags = json.loads(movieBean.tags)
+        else:
+            movieBean = self.get_info_from_movie(self.url)
+            # print("movieBean", movieBean)
+            self.save_db_movie(movieBean)
+            self.conn.close()
         movieBean_json = json.dumps(movieBean, default=lambda obj: obj.__dict__, sort_keys=True, indent=4)
-        # print(movieBean_json)
+        # print("movieBean_json", movieBean_json)
         return movieBean_json
+
+    def get_db_movie(self):
+        from miniprogram.models import MovieDetail
+        queryset = MovieDetail.objects.filter(subjectId=self.movie_id)
+        movie_result = list(queryset)
+        # 本地测试
+        # sql1 = "select * from miniprogram_moviedetail where subjectId = '%s'" % (self.movie_id)
+        # sql1_result = self.conn.execute(sql1)
+        # movie_result = sql1_result.fetchall()
+        # self.conn.commit()
+        print("movie_result", movie_result)
+        return movie_result
+
+    def save_db_movie(self, movie):
+        movie_actors = self.get_obj_str(movie.actors)
+        movie_tags = self.get_obj_str(movie.tags)
+        movie_photos = self.get_obj_str(movie.photos)
+        from miniprogram.models import MovieDetail
+        movie_detail = MovieDetail(image=movie.image, title=movie.title, score=movie.score,
+                                   pubdateTime=movie.pubdateTime, movieType=movie.movieType, duration=movie.duration,
+                                   director=movie.director, area=movie.area, intro=movie.intro, comments=movie.comments,
+                                   actors=movie_actors, tags=movie_tags, photos=movie_photos,
+                                   subjectId=self.movie_id)
+        movie_detail.save()
+        # 本地测试
+        # sql2 = 'insert into miniprogram_moviedetail(image, title, score, pubdateTime, movieType,' \
+        #        'duration, director,area, intro, comments, ' \
+        #        'actors, tags, photos,subjectId) values("%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s")' \
+        #        % (movie.image, movie.title, movie.score, movie.pubdateTime, movie.movieType,
+        #           movie.duration, movie.director, movie.area, movie.intro, movie.comments,
+        #           movie_actors, movie.tags, movie.photos, self.movie_id)
+        # self.conn.execute(sql2)
+        # self.conn.commit()
+        print('save_db_movie-保存成功')
+
+    @staticmethod
+    def get_obj_str(obj):
+        obj_json = json.dumps(obj, default=lambda obj: obj.__dict__, sort_keys=True, indent=4)
+        # print(obj_json)
+        return obj_json
 
     # 获取电影数据
     def get_info_from_movie(self, href):

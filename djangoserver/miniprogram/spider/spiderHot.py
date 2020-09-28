@@ -1,11 +1,14 @@
 import codecs
 import json
 import random
+import sqlite3
 import time
+import datetime
 
 import requests
 from lxml import etree
 
+from miniprogram.models import HotMovie
 from miniprogram.utils import ComHeaders
 from miniprogram.utils.StringUtils import format_str_info
 
@@ -32,13 +35,45 @@ class MovieBean(object):
 class HotMovieSpider(object):
     url = HOT_Url
 
+    def __init__(self):
+        self.today = datetime.date.today()
+        self.conn = sqlite3.connect('../../db.sqlite3')
+        print('open database successfully')
+
     def start(self):
-        movieList = self.get_info_from_movie(self.url)
+        movie_hot_in_db = self.get_db_movie_hot()
+        if movie_hot_in_db:
+            self.conn.close()
+            movieHot = movie_hot_in_db[0]
+            movieList = json.loads(movieHot.movies)
+        else:
+            movieList = self.get_info_from_movie(self.url)
+            self.save_db_movie(movieList)
+            self.conn.close()
         movieList_json = json.dumps(movieList, default=lambda obj: obj.__dict__, sort_keys=True, indent=4)
         # print(movieList)
         # self.save_json_in_json("电影热映", movieList_json)
-        # print(colorListBean_json)
         return movieList_json
+
+    def get_db_movie_hot(self):
+        print('get_db_movie_hot')
+        queryset = HotMovie.objects.filter(dateId=self.today)
+        movie_result = list(queryset)
+        print("movie_result-----------", movie_result)
+        return movie_result
+
+    def save_db_movie(self, movieList):
+        movieListStr = self.get_obj_str(movieList)
+        # print("movieListStr", movieListStr)
+        movie_detail = HotMovie(dateId=self.today, movies=movieListStr)
+        movie_detail.save()
+        print('save_db_movie-保存成功')
+
+    @staticmethod
+    def get_obj_str(obj):
+        obj_json = json.dumps(obj, default=lambda obj: obj.__dict__, sort_keys=True, indent=4)
+        # print(obj_json)
+        return obj_json
 
     # 获取电影数据
     def get_info_from_movie(self, href):
