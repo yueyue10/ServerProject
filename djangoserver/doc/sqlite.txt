@@ -10,3 +10,16 @@ https://www.cnblogs.com/afeng7882999/p/3973523.html
 
 update sqlite_sequence set seq ='0' where name ='miniprogram_bookchapter';
 update sqlite_sequence set seq ='0' where name ='miniprogram_book';
+
+
+命令行：
+
+sqlite3 db.sqlite3
+
+.tables
+
+select * from miniprogram_hotmovie;
+
+delete from miniprogram_hotmovie where id = 2;
+
+.exit;
