@@ -4,6 +4,9 @@ var path = require('path');
 var fs = require("fs");
 var html = require('./html.js')
 const db = require("../db"); //引入数据库封装模块
+//引入封装好的模块
+const sendmail = require("./mail.js");
+
 
 /**
  * @api {get} /demo/download 下载文件
@@ -105,6 +108,11 @@ router.get('/getWeiXinHtml*', function (req, res, next) {
     } else {
         return res.json(result)
     }
+})
+
+
+router.get('/sendEmailCode', function (req, res, next) {
+    return sendmail(res, 'yueyue123zhao@163.com', '<H1>请验收</H1>');
 })
 
 module.exports = router;
