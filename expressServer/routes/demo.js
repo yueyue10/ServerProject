@@ -6,6 +6,7 @@ var html = require('./html.js')
 const db = require("../db"); //引入数据库封装模块
 //引入封装好的模块
 const sendmail = require("./mail.js");
+const getTokenApi = require("./token.js");
 
 
 /**
@@ -113,6 +114,11 @@ router.get('/getWeiXinHtml*', function (req, res, next) {
 
 router.get('/sendEmailCode', function (req, res, next) {
     return sendmail(res, 'yueyue123zhao@163.com', '<H1>请验收</H1>');
+})
+
+
+router.get('/getTokenApi', function (req, res, next) {
+    return getTokenApi(res);
 })
 
 module.exports = router;
