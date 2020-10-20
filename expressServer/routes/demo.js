@@ -118,7 +118,9 @@ router.get('/sendEmailCode', function (req, res, next) {
 
 
 router.get('/getTokenApi', function (req, res, next) {
-    return getTokenApi(res);
+    let appid = req.query.appid
+    let secret = req.query.secret
+    return getTokenApi(res, appid, secret);
 })
 
 module.exports = router;
