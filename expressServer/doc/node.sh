@@ -40,7 +40,7 @@ getForever(){
 }
 
 # 如果文件夹中是否存在www，存在表示进入文件夹成功
-if [ $express_file = "www" ];then
+if [[ "${express_file[@]}" =~ "www" ]];then
    echo -e "---\n cd ${Express_Path}bin/ && forever start server--- \n"
    rm -rf /root/.forever/forever.log
    getForever

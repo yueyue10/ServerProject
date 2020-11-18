@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Socket Test</title>
+    <script src="http://81.68.145.189:3000/socket.io/socket.io.js"></script>
+<!--    <script src="https://zhaoyj.work/express/socket.io/socket.io.js"></script>-->
+
+    <script>
+        window.onload = function () {
+            // 方法一
+            // let sock = io();
+            // 方法二
+            // let sock = io.connect("ws://81.68.145.189:3000/");
+            let sock = io.connect("wss://zhaoyj.work/express/");
+            // 方法三
+            // var sock = io.connect("http://81.68.145.189:3000", {
+            //   transports: ["websocket"],
+            // });
+            /*
+             * 1. sock.on('消息头', 参数);//接收服务器端信息
+             * 2. sock.emit('消息头', 参数); //给服务器发送消息
+             */
+            addSendClick((inputText) => {
+                console.log(sock);
+                sock.emit("chat message", inputText);
+            });
+            sock.on("chat message", (param) => {
+                console.log("server accept success:", param);
+                addText(param);
+            });
+        };
+        //添加发送按钮点击事件
+        function addSendClick(callback) {
+            document.getElementById("send_msg").onclick = function () {
+                let inputValue = document.getElementById("input_view").value;
+                document.getElementById("input_view").value = "";
+                // console.log("inputValue", inputValue);
+                callback(inputValue);
+            };
+        }
+        //增加文本功能
+        function addText(text) {
+            var parent = document.getElementById("content");
+            var div = document.createElement("p");
+            div.setAttribute("id", "newDiv");
+            div.innerHTML = text;
+            parent.appendChild(div);
+        }
+    </script>
+</head>
+<body>
+<h2>个人测试</h2>
+<div>
+    <input
+            id="input_view"
+            style="width: 200px;"
+            placeholder="请输入聊天内容"
+    />
+    <button id="send_msg">发送消息</button>
+</div>
+<div id="content"></div>
+</body>
+</html>
