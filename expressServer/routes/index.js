@@ -8,10 +8,11 @@ router.get("/", function (req, res, next) {
   let base_path = pjson.apidoc.url;
   res.render("index", {
     title: "Express Server",
-    api_path: base_path + "/apidoc/",
-    socketio_path: base_path + "/socketio",
-    sockettest_path: base_path + "/sockettest",
-    socketjade_path: base_path + "/socketjade",
+    api_path: "/apidoc/",
+    socketio_path: "/socketio",
+    sockettest_path: "/sockettest",
+    socketjade_path: "/socketjade",
+    sockettest_domain_path: base_path + "/sockettest/domain",
   });
 });
 
@@ -23,6 +24,12 @@ router.get("/socketio", function (req, res) {
 
 router.get("/sockettest", function (req, res) {
   res.sendFile(path.join(path.resolve(__dirname, ".."), "public/socket.html"));
+});
+
+router.get("/sockettest/domain", function (req, res) {
+  res.sendFile(
+    path.join(path.resolve(__dirname, ".."), "public/socket_domain.html")
+  );
 });
 
 router.get("/socketjade", function (req, res, next) {

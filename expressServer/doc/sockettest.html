@@ -11,10 +11,13 @@
             // 方法一
             // let sock = io();
             // 方法二
-            // let sock = io.connect("ws://81.68.145.189:3000/");
-            let sock = io.connect("wss://zhaoyj.work/express/");
+            let sock = io.connect("ws://81.68.145.189:3000");
+            // let sock = io.connect("wss://zhaoyj.work/express/");
             // 方法三
             // var sock = io.connect("http://81.68.145.189:3000", {
+            //   transports: ["websocket"],
+            // });
+            // var sock = io.connect("https://zhaoyj.work/express/", {
             //   transports: ["websocket"],
             // });
             /*
