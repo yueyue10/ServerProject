@@ -7,9 +7,9 @@
     <script>
       window.onload = function () {
         // 方法一
-        // let sock = io();
+        let sock = io('/chat');
         // 方法二
-        let sock = io.connect("ws://127.0.0.1:3000/chat");
+        // let sock = io.connect("ws://127.0.0.1:3000/chat");
         // 方法三
         // var sock = io.connect("http://127.0.0.1:3000/", {
         //   transports: ["websocket"],
@@ -47,7 +47,7 @@
     </script>
   </head>
   <body>
-    <h2>个人测试</h2>
+    <h2>个人测试 IP</h2>
     <div>
       <input
         id="input_view"
