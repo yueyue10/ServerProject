@@ -8,7 +8,7 @@ router.get("/", function (req, res, next) {
   let base_path = pjson.apidoc.url;
   res.render("index", {
     title: "Express Server",
-    api_path: "/apidoc/",
+    api_path: base_path + "/apidoc/",
     socketio_path: "/socketio",
     sockettest_path: "/sockettest",
     socketjade_path: "/socketjade",

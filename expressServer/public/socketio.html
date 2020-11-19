@@ -58,11 +58,11 @@
       <button>Send</button>
     </form>
 
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-    <script src="https://zhaoyj.work/express/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script>
-      var socket = io();
+      // var socket = io();
+      var socket = io.connect("ws://127.0.0.1:3000/chat");
       $("form").submit(function () {
         socket.emit("chat message", $("#m").val());
         $("#m").val("");

@@ -6,7 +6,7 @@ var server = require("http").createServer(app);
 
 var socketIO = require("socket.io")(server);
 
-socketIO.on("connection", function (socket) {
+socketIO.of("/chat").on("connection", function (socket) {
   console.log("===========a user connected==============");
 
   socket.on("disconnect", function () {
@@ -16,7 +16,7 @@ socketIO.on("connection", function (socket) {
   socket.on("chat message", function (msg) {
     console.log("===========message: " + msg + " ===========");
 
-    socketIO.emit("chat message", msg);
+    socket.emit("chat message", msg);
   });
 });
 
