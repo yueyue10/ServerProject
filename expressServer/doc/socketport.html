@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8" />
     <title>Socket Test</title>
-<!--    <script src="http://81.68.145.189:3000/socket.io/socket.io.js"></script>-->
-    <script src="https://zhaoyj.work/express/socket.io/socket.io.js"></script>
+     <!--<script src="http://81.68.145.189:3000/socket.io/socket.io.js"></script>-->
+   <script src="https://zhaoyj.work/express/socket.io/socket.io.js"></script>
 
     <script>
         window.onload = function () {
             // 方法一
             // let sock = io();
             // 方法二
-            // let sock = io.connect("ws://81.68.145.189:3000");
-            // let sock = io.connect("wss://zhaoyj.work:express");
+             //let sock = io.connect("ws://81.68.145.189:3000/chat");
+            // let sock = io.connect("wss://zhaoyj.work/chat");
             // 方法三
-            // var sock = io.connect("http://81.68.145.189:3000", {
-            //   transports: ["websocket"],
+             //var sock = io.connect("http://81.68.145.189:3000/chat", {
+             //  transports: ["websocket"],
             // });
-            var sock = io.connect("http://zhaoyj.work/express/", {
-              transports: ["websocket"],
+            var sock = io.connect("https://zhaoyj.work/chat/", {
+             transports: ["websocket"],
             });
             /*
              * 1. sock.on('消息头', 参数);//接收服务器端信息

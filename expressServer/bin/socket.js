@@ -1,32 +1,18 @@
-var app = require("../app");
-// 写法一1
-var server = require("http").createServer(app);
-// 写法二1
-// var server = require("http").Server(app);
+module.exports = function (server) {
+    var socketIO = require("socket.io")(server);
 
-var socketIO = require("socket.io")(server);
+    socketIO.on("connection", (socket) => {
+        console.log("===========a user connected==============");
 
-socketIO.of("/chat").on("connection", function (socket) {
-  console.log("===========a user connected==============");
+        socket.on("disconnect", function () {
+            console.log("===========user disconnected===========");
+        });
 
-  socket.on("disconnect", function () {
-    console.log("===========user disconnected===========");
-  });
+        socket.on("chatMsg", function (msg) {
+            console.log("===========message: " + msg + " ===========");
 
-  socket.on("chat message", function (msg) {
-    console.log("===========message: " + msg + " ===========");
-
-    socket.emit("chat message", msg);
-  });
-});
-
-app.set("port", process.env.PORT || 3000);
-
-// 写法一2
-server.listen(app.get("port"));
-// 写法二2
-// var service = server.listen(app.get("port"), function () {
-//   console.log("start at port:" + service.address().port);
-// });
-
-module.exports = server;
+            // socket.emit("chat message", msg);//这个只对自己的连接进行回复
+            socketIO.emit('chatMsg', msg);//所有用户都回复
+        });
+    });
+}
