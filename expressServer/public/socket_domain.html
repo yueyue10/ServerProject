@@ -20,9 +20,9 @@
          */
         addSendClick((inputText) => {
           console.log(sock);
-          sock.emit("chat message", inputText);
+          sock.emit("chatMsg", inputText);
         });
-        sock.on("chat message", (param) => {
+        sock.on("chatMsg", (param) => {
           console.log("server accept success:", param);
           addText(param);
         });
@@ -47,7 +47,7 @@
     </script>
   </head>
   <body>
-    <h2>个人测试</h2>
+    <h2>个人测试 域名</h2>
     <div>
       <input
         id="input_view"

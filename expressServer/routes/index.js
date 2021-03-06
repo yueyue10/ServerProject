@@ -9,24 +9,24 @@ router.get("/", function (req, res, next) {
   res.render("index", {
     title: "Express Server",
     api_path: base_path + "/apidoc/",
-    socketio_path: "/socketio",
-    sockettest_path: "/sockettest",
-    socketjade_path: "/socketjade",
-    sockettest_domain_path: base_path + "/sockettest/domain",
+    socket_demo_path: "/socket_demo",
+    socket_ip_path: "/socket_ip",
+    socket_jade_path: "/socketjade",
+    socket_domain_path: base_path + "/socket_domain",
   });
 });
 
-router.get("/socketio", function (req, res) {
+router.get("/socket_demo", function (req, res) {
   res.sendFile(
-    path.join(path.resolve(__dirname, ".."), "public/socketio.html")
+    path.join(path.resolve(__dirname, ".."), "public/socket_demo.html")
   );
 });
 
-router.get("/sockettest", function (req, res) {
-  res.sendFile(path.join(path.resolve(__dirname, ".."), "public/socket.html"));
+router.get("/socket_ip", function (req, res) {
+  res.sendFile(path.join(path.resolve(__dirname, ".."), "public/socket_ip.html"));
 });
 
-router.get("/sockettest/domain", function (req, res) {
+router.get("/socket_domain", function (req, res) {
   res.sendFile(
     path.join(path.resolve(__dirname, ".."), "public/socket_domain.html")
   );
