@@ -5,6 +5,7 @@ from miniprogram.views import poetry, index, movie
 
 urlpatterns = [
     path('index/', index.index),
+    path('upload/', index.upload),
     url(r'grade_types/', index.grade_types),
     url(r'poetry_rank/', index.poetry_rank),
     path(r'poetry_list/', index.poetry_list),  # 第一种方式：通过请求参数传值

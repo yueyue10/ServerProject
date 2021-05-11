@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>啼鸟悦读</title>
+<!--    <script src="lib-flexible.js"></script>-->
+    <style type="text/css">
+
+        /* 基础布局样式 */
+        .ver-layout, .ver-layout-center, ver-layout-center-all {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ver-layout-center {
+            align-items: center;
+        }
+
+        .ver-layout-center-all {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hor-layout, .hor-layout-center, .hor-layout-side, .hor-layout-center-all {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .hor-layout-center {
+            align-items: center;
+        }
+
+        .hor-layout-side {
+            justify-content: space-between;
+        }
+
+        .hor-layout-center-all {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            font-size: small;
+            width: calc(100vw - 40px);
+            background: white;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 3px 3px 3px #888888;
+        }
+
+        .book_info {
+            margin-top: 5px;
+        }
+
+        .button-view {
+            background: #2664DE;
+            border-radius: 5px;
+            color: white;
+            font-size: small;
+            margin: 20px 0px;
+        }
+
+        .join-button {
+            width: calc(100% - 80px);
+            padding: 14px;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px auto;
+        }
+
+        .card-2-title {
+            font-size: medium;
+            font-weight: bold;
+            margin-top: 20px
+        }
+
+        .card-2-info {
+            color: #3670E0;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 20px
+        }
+    </style>
+</head>
+<body>
+<div style="width: 100%;height: 40%;background: #2664DE;position: fixed;top: 0px"></div>
+<div style="width: 100%;height: 60%;background: #F2F3F9;position: fixed;top: 40%"></div>
+<div class="ver-layout" style="position: absolute;width: 100%">
+    <div class="card hor-layout" style="margin-top: 70px;">
+        <img style="margin:20px;width: 70px;height: 130px"
+             src="http://img.gaodaima.com/paperimg_gaodaima_chengxuyuan.jpg">
+        <div style="margin-top: 20px">
+            <div style="font-weight: bold">Book ID:22</div>
+            <div class="book_info">it is finl</div>
+            <div class="book_info">美国同步小学系列-aa</div>
+            <div class="book_info">ATOS Level1.1</div>
+            <div class="hor-layout book_info">
+                <span>单词数：180</span>
+                <span>平均单词难度：250</span>
+            </div>
+            <div class="hor-layout book_info">
+                <span>总句子：180</span>
+                <span>平均长度：250</span>
+            </div>
+            <div class="button-view" style="padding:7px 10px;width: fit-content">
+                一起加入分级阅读
+            </div>
+        </div>
+    </div>
+    <div class="card ver-layout-center" style="margin-top: 20px;">
+        <div class="card-2-title">定期权威评测，看到孩子进步</div>
+        <div class="card-2-info">科学稳健带孩子进入英文自主阅读</div>
+        <div class="hor-layout-side" style="width: calc(100% - 40px);margin:auto;margin-top: 20px">
+            <div>权威评测</div>
+            <div>针对性计划</div>
+            <div>纸质分级阅读</div>
+            <div>配套练习</div>
+        </div>
+        <div class="button-view join-button">
+            立即加入
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,10 +1,13 @@
 import json
+import time
 
 from django.core.paginator import Paginator
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, render
 
 from djangoserver import result
 from miniprogram import models
+import os
+from miniprogram.answer.main import Answer
 
 
 # Create your views here.
@@ -14,6 +17,23 @@ def index(request):
     queryset = models.GradeType.objects.all().values('grade_name', 'grade_image', 'poetry_flag')
     ret = json.dumps(list(queryset), ensure_ascii=False)
     return HttpResponse(ret)
+
+
+def upload(request):
+    print("upload==========", request)
+    if request.method == 'POST':  # 获取对象
+        obj = request.FILES.get('fafafa')
+        print("name", obj.name)
+        file_path = os.path.join(os.path.dirname(__file__), obj.name)
+        file = open(file_path, 'wb')
+        for chunk in obj.chunks():
+            file.write(chunk)
+        file.close()
+        time.sleep(2)
+        answer = Answer(file_path)
+        ans_list = answer.start()
+        return HttpResponse("答案{},数量{}".format(ans_list,len(ans_list)))
+    return render(request, 'html/upload.html')
 
 
 def grade_types(request):
