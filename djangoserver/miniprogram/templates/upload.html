@@ -70,12 +70,14 @@
         <div style="display: flex;flex-direction: row;margin-top: 15px">
             <div>
                 <div style="text-align: center;margin-bottom: 10px">原图</div>
-                <img src="/static/media/images/{{ imgName }}" width="300" height="420">
-                <!--            <img src="../../../static/media/images/t2.jpg" width="300" height="420">-->
+                <div>{{ imgName }}</div>
+                <div>{{ points_name }}</div>
+                <img src="/media/images/{{ imgName }}" width="300" height="420">
+                <!-- <img src="../../../static/media/images/t2.jpg" width="300" height="420">-->
             </div>
             <div style="margin-left: 20px">
                 <div style="text-align: center;margin-bottom: 10px">opencv处理识别答题</div>
-                <img src="/static/media/images/{{ points_name }}" width="300" height="420">
+                <img src="/media/images/{{ points_name }}" width="300" height="420">
             </div>
         </div>
     </div>

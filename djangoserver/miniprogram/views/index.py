@@ -27,14 +27,15 @@ def upload(request):
         file_path = os.path.join(settings.MEDIA_ROOT, picture.image.url)
         print("file_path============", file_path)
         answer = Answer(file_path)
-        ans_list, points_name = answer.start()
+        ans_list, points_name, file_name = answer.start()
         ans_num = len(ans_list)
         return render(request, 'upload.html',
-                      {"imgName": obj.name, "ans_list": ans_list, "ans_num": ans_num, "points_name": points_name})
+                      {"imgName": file_name, "ans_list": ans_list, "ans_num": ans_num, "points_name": points_name})
     return render(request, 'upload.html', {"imgName": '', "ans_list": ''})
 
 
 def upload_img(request):
+    local_path = 'https://zhaoyj.work/media/images/'
     if request.method == 'POST':  # 获取对象
         obj = request.FILES.get('image_input')
         print("upload_img-obj=================", obj)
@@ -43,12 +44,15 @@ def upload_img(request):
         file_path = os.path.join(settings.MEDIA_ROOT, picture.image.url)
         print("file_path============", file_path)
         answer = Answer(file_path)
-        ans_list, points_name = answer.start()
+        ans_list, points_name, file_name = answer.start()
         ans_num = len(ans_list)
-        data = {"answers": ans_list, "ans_num": ans_num, "img_path": file_path, "points_name": points_name}
+        img_path = os.path.join(local_path, file_name)
+        points_path = os.path.join(local_path, points_name)
+        data = {"answers": ans_list, "ans_num": ans_num, "img_path": img_path, "points_path": points_path}
         return result.success(data)
         file = request.FILES['image_input']
         return HttpResponse(file, content_type="image/jpeg")
+
 
 def grade_types(request):
     queryset = models.GradeType.objects.all().values('grade_name', 'grade_image', 'poetry_flag')

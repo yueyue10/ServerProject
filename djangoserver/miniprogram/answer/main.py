@@ -15,12 +15,12 @@ ver_que_space = 45  # 答案块纵向间距
 
 class Answer(object):
     def __init__(self, path):
-        print("cv2-version========",cv2.__version__)
+        print("cv2-version========", cv2.__version__)
         self.path = path
-        file_name = os.path.basename(path)
+        self.file_name = os.path.basename(path)
         # print("file_name", file_name)
-        points_file = file_name.split(".")[0] + "_points"
-        points_file_name = points_file + "." + file_name.split(".")[1]
+        points_file = self.file_name.split(".")[0] + "_points"
+        points_file_name = points_file + "." + self.file_name.split(".")[1]
         self.points_file_name = points_file_name  # 选择的答案图片的名称
         self.points_path = os.path.join(os.path.dirname(path), points_file_name)  # 选择的答案的图片路径
         print("path================", self.path)
@@ -36,7 +36,7 @@ class Answer(object):
             ans_item = self.compute_score(que_item, img_trans2, card_list)
             ans_list.append(ans_item)
         print("ans_list", ans_list)
-        return ans_list, self.points_file_name
+        return ans_list, self.points_file_name, self.file_name
 
     # 读取图片，根据四个定位圆进行透视变换
     def read_img(self):

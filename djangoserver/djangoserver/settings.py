@@ -136,6 +136,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 # 上传文件路径，注意windows下路径是\，而linux是/，还要加上转义字符r
-MEDIA_ROOT = os.path.join(BASE_DIR, r'static\media')
+MEDIA_ROOT = os.path.join(BASE_DIR, r'media')
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 默认设置为5M
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10485760
