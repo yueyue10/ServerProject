@@ -3,14 +3,12 @@ import time
 
 from django.core.paginator import Paginator
 from django.shortcuts import HttpResponse, render
-
+from django.conf import settings
 from djangoserver import result
 from miniprogram import models
 import os
 from miniprogram.answer.main import Answer
-
-
-# Create your views here.
+from miniprogram.models import Picture
 
 
 def index(request):
@@ -22,18 +20,19 @@ def index(request):
 def upload(request):
     print("upload==========", request)
     if request.method == 'POST':  # 获取对象
-        obj = request.FILES.get('fafafa')
+        obj = request.FILES.get('image_input')
         print("name", obj.name)
-        file_path = os.path.join(os.path.dirname(__file__), obj.name)
-        file = open(file_path, 'wb')
-        for chunk in obj.chunks():
-            file.write(chunk)
-        file.close()
-        time.sleep(2)
+        picture = Picture(title=obj.name, image=obj)
+        picture.save()
+        # img_path = os.path.join(r'/static/media/upload/', obj.name)
+        img_path = picture.image
+        file_path = os.path.join(settings.MEDIA_ROOT, picture.image.url)
+        print("\n\n保存成功============", img_path)
+        print("file_path============", file_path)
         answer = Answer(file_path)
         ans_list = answer.start()
-        return HttpResponse("答案{},数量{}".format(ans_list,len(ans_list)))
-    return render(request, 'html/upload.html')
+        return render(request, 'html/upload.html', {"imgName": obj.name, "ans_list": ans_list})
+    return render(request, 'html/upload.html', {"imgName": '', "ans_list": ''})
 
 
 def grade_types(request):

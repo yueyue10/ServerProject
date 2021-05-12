@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 from rest_framework.documentation import include_docs_urls
+# 对于显示静态文件非常重要
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('poetry/', include('miniprogram.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'docs/', include_docs_urls(title='接口文档', authentication_classes=[], permission_classes=[])),
-]
+]+ static('/html/', document_root=settings.MEDIA_ROOT)

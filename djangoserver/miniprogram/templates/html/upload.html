@@ -3,12 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>文件上传</title>
+    <script type="text/javascript">
+        window.history.replaceState(null, null, window.location.href);
+        console.log("aaa")
+    </script>
+    <style type="text/css">
+        .form-view {
+            margin: 20px;
+            padding: 0px 10px;
+            padding-bottom: 20px;
+            border-radius: 7px;
+            border: 2px solid #4e575a;
+        }
+
+        .title-view {
+            text-align: center;
+            font-weight: bold;
+            font-size: large;
+        }
+
+        .result-view {
+            margin: 20px;
+            padding: 0px 10px;
+            border-radius: 7px;
+            border: 2px solid #4e575a;
+        }
+    </style>
 </head>
 <body>
-<form action="/poetry/upload/" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="fafafa">
-    <input type="submit">
-</form>
+<div>
+    <form action="/poetry/upload/" class="form-view" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="title-view">选择图片</div>
+        <input type="file" name="image_input" placeholder="上传图片">
+        <input type="submit" placeholder="上传">
+    </form>
+    <div class="result-view" style="font-size: small">
+        <div class="title-view">识别结果</div>
+        <p>图片名称：{{imgName}}</p>
+        <div>答案：{{ans_list}}</div>
+        <!--    <img src="/static/media/images/{{ imgName }}" width="380" height="680">-->
+        <img src="../../../static/media/images/t2.jpg" width="300" height="420">
+    </div>
+</div>
 </body>
 </html>

@@ -76,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -130,3 +131,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
 FILE_UPLOAD_PERMISSIONS = 0o644
+# 配置静态文件路径
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+# 上传文件路径，注意windows下路径是\，而linux是/，还要加上转义字符r
+MEDIA_ROOT = os.path.join(BASE_DIR, r'static\media')

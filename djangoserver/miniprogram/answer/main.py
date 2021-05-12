@@ -7,10 +7,10 @@ import numpy as np
 from imutils import contours
 from imutils.perspective import four_point_transform
 
-hor_space = 15  # 横向间距15
+hor_space = 20  # 横向间距15
 hor_que_space = 15  # 答案单个横向间距
-ver_space = 15  # 纵向间距15
-ver_que_space = 40  # 答案块纵向间距
+ver_space = 20  # 纵向间距15
+ver_que_space = 45  # 答案块纵向间距
 
 
 class Answer(object):
@@ -28,8 +28,6 @@ class Answer(object):
             ans_item = self.compute_score(que_item, img_trans2, card_list)
             ans_list.append(ans_item)
         print("ans_list", ans_list)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
         return ans_list
 
     # 读取图片，根据四个定位圆进行透视变换
@@ -106,8 +104,8 @@ class Answer(object):
 
     # 获取选中的答案
     def get_sel_point(self, gray_trans2, img_trans2):
-        thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 11, 50)
-        cv2.imshow("ostu2", thresh2)
+        thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 11, 54)
+        # cv2.imshow("ostu2", thresh2)
         r_image, r_cnt, r_hierarchy = cv2.findContours(thresh2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("找到轮廓个数----------------：", len(r_cnt))
         # 使用红色标记所有的轮廓
@@ -122,7 +120,7 @@ class Answer(object):
                 cv2.rectangle(img_trans2, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # 把每个选项，保存下来
                 sel_cts.append([x, y, w, h])
-        cv2.imshow("sel_point", img_trans2)
+        # cv2.imshow("sel_point", img_trans2)
         print("sel_cts========", len(sel_cts))
         return sel_cts
 
@@ -179,3 +177,5 @@ class Answer(object):
 if __name__ == '__main__':
     answer = Answer("../views/t3.jpg")
     answer.start()
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
