@@ -21,17 +21,16 @@ def upload(request):
     print("upload==========", request)
     if request.method == 'POST':  # 获取对象
         obj = request.FILES.get('image_input')
-        print("name", obj.name)
+        print("name============", obj.name)
         picture = Picture(title=obj.name, image=obj)
         picture.save()
-        # img_path = os.path.join(r'/static/media/upload/', obj.name)
-        img_path = picture.image
         file_path = os.path.join(settings.MEDIA_ROOT, picture.image.url)
-        print("\n\n保存成功============", img_path)
         print("file_path============", file_path)
         answer = Answer(file_path)
-        ans_list = answer.start()
-        return render(request, 'html/upload.html', {"imgName": obj.name, "ans_list": ans_list})
+        ans_list, points_name = answer.start()
+        ans_num = len(ans_list)
+        return render(request, 'html/upload.html',
+                      {"imgName": obj.name, "ans_list": ans_list, "ans_num": ans_num, "points_name": points_name})
     return render(request, 'html/upload.html', {"imgName": '', "ans_list": ''})
 
 
@@ -68,10 +67,10 @@ def poetry_list(request, **kw):
         page_index = request.GET.get('pageIndex')
         poetry_flag = request.GET.get('poetry_flag')
     queryset = models.Poetry.objects.filter(poetry_flag=poetry_flag).order_by('mark_index').values('title', 'time',
-                                                                                                    'author', 'content',
-                                                                                                    'mark_index',
-                                                                                                    'poetry_flag',
-                                                                                                    'pic')
+                                                                                                   'author', 'content',
+                                                                                                   'mark_index',
+                                                                                                   'poetry_flag',
+                                                                                                   'pic')
     paginator = Paginator(queryset, page_num)
     page_num = paginator.num_pages
     page_list = paginator.page(page_index)

@@ -28,6 +28,19 @@
             border-radius: 7px;
             border: 2px solid #4e575a;
         }
+
+        .ans-view {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .ans-item {
+            padding: 4px;
+            margin: 0px 10px;
+            color: #2BE3FA;
+            background: #4e575a;
+            border-radius: 2px
+        }
     </style>
 </head>
 <body>
@@ -41,9 +54,30 @@
     <div class="result-view" style="font-size: small">
         <div class="title-view">识别结果</div>
         <p>图片名称：{{imgName}}</p>
-        <div>答案：{{ans_list}}</div>
-        <!--    <img src="/static/media/images/{{ imgName }}" width="380" height="680">-->
-        <img src="../../../static/media/images/t2.jpg" width="300" height="420">
+        <div>
+            识别结果：
+            <span style="color: #d22b34;">数量：{{ans_num}}</span>
+        </div>
+        <div>
+            识别答案：
+            <!--<div>{{ans_list}}</div>-->
+            <div class="ans-view">
+                {% for ans in ans_list %}
+                <span class="ans-item">{{ans.0}}-{{ans.1}}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div style="display: flex;flex-direction: row;margin-top: 15px">
+            <div>
+                <div style="text-align: center;margin-bottom: 10px">原图</div>
+                <img src="/static/media/images/{{ imgName }}" width="300" height="420">
+                <!--            <img src="../../../static/media/images/t2.jpg" width="300" height="420">-->
+            </div>
+            <div style="margin-left: 20px">
+                <div style="text-align: center;margin-bottom: 10px">opencv处理识别答题</div>
+                <img src="/static/media/images/{{ points_name }}" width="300" height="420">
+            </div>
+        </div>
     </div>
 </div>
 </body>
