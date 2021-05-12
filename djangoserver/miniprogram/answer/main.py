@@ -15,6 +15,7 @@ ver_que_space = 45  # 答案块纵向间距
 
 class Answer(object):
     def __init__(self, path):
+        print("cv2-version========",cv2.__version__)
         self.path = path
         file_name = os.path.basename(path)
         # print("file_name", file_name)
@@ -82,6 +83,7 @@ class Answer(object):
         # cv2.imshow("gaussian", gaussian_bulr)
         edged = cv2.Canny(gaussian_bulr, 75, 200)  # 边缘检测,灰度值小于2参这个值的会被丢弃，大于3参这个值会被当成边缘，在中间的部分，自动检测
         # cv2.imshow("edged", edged)
+        # self.show_img(edged)
         # 1.寻找轮廓
         image, cts, hierarchy = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         # 2.将轮廓数据以{c:轮廓，peri:周长}dict形式存放到path_list里面
@@ -181,9 +183,16 @@ class Answer(object):
         elif percent < 1:
             return "D"
 
+    def show_img(self, img, title='img'):
+        cv2.imshow(title, img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
-    answer = Answer("../views/t3.jpg")
-    answer.start()
+    # answer = Answer("../views/t3.jpg")
+    # answer.start()
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
+    now_time = time.time()
+    print(int(now_time))

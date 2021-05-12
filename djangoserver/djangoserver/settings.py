@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -68,7 +68,7 @@ ROOT_URLCONF = 'djangoserver.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'DIRS': [os.path.join(BASE_DIR, 'miniprogram/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,3 +137,5 @@ STATICFILES_DIRS = [
 ]
 # 上传文件路径，注意windows下路径是\，而linux是/，还要加上转义字符r
 MEDIA_ROOT = os.path.join(BASE_DIR, r'static\media')
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 默认设置为5M
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10485760

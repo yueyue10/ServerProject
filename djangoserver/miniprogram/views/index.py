@@ -29,10 +29,26 @@ def upload(request):
         answer = Answer(file_path)
         ans_list, points_name = answer.start()
         ans_num = len(ans_list)
-        return render(request, 'html/upload.html',
+        return render(request, 'upload.html',
                       {"imgName": obj.name, "ans_list": ans_list, "ans_num": ans_num, "points_name": points_name})
-    return render(request, 'html/upload.html', {"imgName": '', "ans_list": ''})
+    return render(request, 'upload.html', {"imgName": '', "ans_list": ''})
 
+
+def upload_img(request):
+    if request.method == 'POST':  # 获取对象
+        obj = request.FILES.get('image_input')
+        print("upload_img-obj=================", obj)
+        picture = Picture(title=obj.name, image=obj)
+        picture.save()
+        file_path = os.path.join(settings.MEDIA_ROOT, picture.image.url)
+        print("file_path============", file_path)
+        answer = Answer(file_path)
+        ans_list, points_name = answer.start()
+        ans_num = len(ans_list)
+        data = {"answers": ans_list, "ans_num": ans_num, "img_path": file_path, "points_name": points_name}
+        return result.success(data)
+        file = request.FILES['image_input']
+        return HttpResponse(file, content_type="image/jpeg")
 
 def grade_types(request):
     queryset = models.GradeType.objects.all().values('grade_name', 'grade_image', 'poetry_flag')
