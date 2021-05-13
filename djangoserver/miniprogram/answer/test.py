@@ -51,7 +51,9 @@ class AnswerTest(object):
         result = cv2.blur(img, (5, 5))
         # 2.灰度化,就是去色（类似老式照片）
         gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
-        circles=self.create_trackbar(gray.copy(),img)
+        # 3.霍夫变换圆检测-定位答题卡圆圈位置
+        circles = cv2.HoughCircles(gray.copy(), cv2.HOUGH_GRADIENT, 1, 200, param1=250, param2=15, minRadius=5,
+                                   maxRadius=20)
         circles = np.round(circles[0, :]).astype('int')
         circles = sorted(circles, key=lambda x: x[1])  # 对y轴排序
         top_circles = sorted(circles[0: 2], key=lambda x: x[0])  # 对x轴排序
@@ -113,8 +115,9 @@ class AnswerTest(object):
 
     # 获取选中的答案
     def get_sel_point(self, gray_trans2, img_trans2):
+        self.create_trackbar(gray_trans2)
         thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 11, 54)
-        # cv2.imshow("ostu2", thresh2)
+        self.show_img("ostu2", thresh2, True)
         r_image, r_cnt, r_hierarchy = cv2.findContours(thresh2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("找到轮廓个数----------------：", len(r_cnt))
         # 使用红色标记所有的轮廓
@@ -183,18 +186,19 @@ class AnswerTest(object):
         elif percent < 1:
             return "D"
 
-    def show_img(self, title, img):
+    def show_img(self, title, img, wait=False):
         cv2.imshow(title, img)
-        cv2.waitKey(0)
+        if wait: cv2.waitKey(0)
 
-    def create_trackbar(self,res,img):
+    def create_trackbar(self,res):
         cv2.namedWindow('tracks')
-        cv2.createTrackbar("key0", "tracks", 1, 300, lambda x: None)
-        cv2.createTrackbar("key1", "tracks", 200, 200, lambda x: None)
+        cv2.createTrackbar("key0", "tracks", 17, 300, lambda x: None)
+        cv2.createTrackbar("key1", "tracks", 25, 200, lambda x: None)
         while True:
             key0 = cv2.getTrackbarPos("key0", "tracks")
             key1 = cv2.getTrackbarPos("key1", "tracks")
-            cv2.imshow("circle", img)
+            thresh2 = cv2.adaptiveThreshold(res, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, key0, key1)
+            cv2.imshow("thresh2", thresh2)
             k = cv2.waitKey(1)
             if k == 27:
                 break

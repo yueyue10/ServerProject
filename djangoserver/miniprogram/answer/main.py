@@ -115,8 +115,8 @@ class Answer(object):
 
     # 获取选中的答案
     def get_sel_point(self, gray_trans2, img_trans2):
-        thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 11, 54)
-        self.show_img("ostu2", thresh2, True)
+        thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 17, 25)
+        self.show_img("ostu2", thresh2)
         r_image, r_cnt, r_hierarchy = cv2.findContours(thresh2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("找到轮廓个数----------------：", len(r_cnt))
         # 使用红色标记所有的轮廓
@@ -127,7 +127,7 @@ class Answer(object):
             # 通过矩形，标记每一个指定的轮廓
             x, y, w, h = cv2.boundingRect(cxx)
             ar = w / float(h)
-            if 10 > w >= 5:
+            if w > 7 and ar > 1.7:
                 cv2.rectangle(img_trans2, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # 把每个选项，保存下来
                 sel_cts.append([x, y, w, h])
@@ -191,5 +191,5 @@ class Answer(object):
 
 
 if __name__ == '__main__':
-    answer = Answer("t4.jpg")
+    answer = Answer("t5.jpg")
     answer.start()
