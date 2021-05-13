@@ -6,11 +6,16 @@ import cv2
 import numpy as np
 from imutils import contours
 from imutils.perspective import four_point_transform
+from answer.ocr_sdk import OcrSdk
 
+# 在答题卡涂选答案参数
 hor_space = 20  # 横向间距15
 hor_que_space = 15  # 答案单个横向间距
 ver_space = 20  # 纵向间距15
 ver_que_space = 45  # 答案块纵向间距
+# 在答题卡输入区域参数
+ver_per = 51 / 138
+hor_per = 204 / 362
 
 
 class Answer(object):
@@ -29,14 +34,15 @@ class Answer(object):
     def start(self):
         ans_list = []  # 选择的题目和答案
         gray_trans, img_trans = self.read_img()
-        gray_trans2, img_trans2 = self.transform_again(gray_trans, img_trans)
-        sel_cts = self.get_sel_point(gray_trans2, img_trans2)
+        ans_trans, input_trans = self.transform_again(gray_trans, img_trans)
+        texts = self.get_input_text(input_trans)
+        sel_cts = self.get_sel_point(ans_trans, img_trans)
         card_list = self.get_card_list()  # 答题卡区域
         for que_item in sel_cts:
-            ans_item = self.compute_score(que_item, img_trans2, card_list)
+            ans_item = self.compute_score(que_item, ans_trans, card_list)
             ans_list.append(ans_item)
         print("ans_list", ans_list)
-        return ans_list, self.points_file_name, self.file_name
+        return ans_list, texts, self.points_file_name, self.file_name
 
     # 读取图片，根据四个定位圆进行透视变换
     def read_img(self):
@@ -106,12 +112,23 @@ class Answer(object):
         # print("rect.shape()", rect.shape)
         my, mx = gray_trans.shape
         # 5.利用轮廓坐标组成新的透视定位4坐标点
-        four_points = [[0, y + h], [mx, y + h], [0, my], [mx, my]]
+        ans_four_points = [[0, y + h], [mx, y + h], [0, my], [mx, my]]  # 答案定位四点
+        input_four_points = [[0, 0], [mx, 0], [0, y + h], [mx, y + h]]  # 输入框定位四点
         # 6.再次进行透视转换
-        gray_trans2 = four_point_transform(gray_trans, np.array(four_points))
-        img_trans2 = four_point_transform(img_trans, np.array(four_points))
-        self.show_img("img_trans2", img_trans2)
-        return gray_trans2, img_trans2
+        ans_trans = four_point_transform(gray_trans, np.array(ans_four_points))
+        input_trans = four_point_transform(img_trans, np.array(input_four_points))
+        return ans_trans, input_trans
+
+    # 获取输入的文字
+    def get_input_text(self, img_trans2):
+        mhei, mwid, _ = img_trans2.shape
+        print("img_trans2.shape", img_trans2.shape)  # 138, 362  204 51
+        # 裁剪输入图片
+        input_img = img_trans2[0:int(ver_per * mhei), 0:int(hor_per * mwid)]
+        self.show_img("input_img", input_img, True)
+        ocr = OcrSdk()
+        texts = ocr.read_text_cv(input_img)
+        return texts
 
     # 获取选中的答案
     def get_sel_point(self, gray_trans2, img_trans2):
@@ -152,7 +169,7 @@ class Answer(object):
             # print("coo", x, y)
             if x + hor_que_space > cx > x and y + ver_que_space > cy > y:
                 choose_ans = self.get_answer(cy - y, ver_que_space)
-                print("题目{},答案{}".format(coo['key'], choose_ans))
+                # print("题目{},答案{}".format(coo['key'], choose_ans))
                 choose_que = [coo['key'], choose_ans]
                 break
         return choose_que
@@ -191,5 +208,5 @@ class Answer(object):
 
 
 if __name__ == '__main__':
-    answer = Answer("t5.jpg")
+    answer = Answer("t4.jpg")
     answer.start()
