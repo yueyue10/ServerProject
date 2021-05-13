@@ -13,7 +13,7 @@ ver_space = 20  # 纵向间距15
 ver_que_space = 45  # 答案块纵向间距
 
 
-class Answer(object):
+class AnswerTest(object):
     def __init__(self, path):
         print("cv2-version========", cv2.__version__)
         self.path = path
@@ -51,9 +51,7 @@ class Answer(object):
         result = cv2.blur(img, (5, 5))
         # 2.灰度化,就是去色（类似老式照片）
         gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
-        # 3.霍夫变换圆检测-定位答题卡圆圈位置
-        circles = cv2.HoughCircles(gray.copy(), cv2.HOUGH_GRADIENT, 1, 200, param1=250, param2=15, minRadius=5,
-                                   maxRadius=20)
+        circles=self.create_trackbar(gray.copy(),img)
         circles = np.round(circles[0, :]).astype('int')
         circles = sorted(circles, key=lambda x: x[1])  # 对y轴排序
         top_circles = sorted(circles[0: 2], key=lambda x: x[0])  # 对x轴排序
@@ -116,11 +114,11 @@ class Answer(object):
     # 获取选中的答案
     def get_sel_point(self, gray_trans2, img_trans2):
         thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 11, 54)
-        self.show_img("ostu2", thresh2, True)
+        # cv2.imshow("ostu2", thresh2)
         r_image, r_cnt, r_hierarchy = cv2.findContours(thresh2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("找到轮廓个数----------------：", len(r_cnt))
         # 使用红色标记所有的轮廓
-        cv2.drawContours(img_trans2, r_cnt, -1, (0, 0, 255), 2)
+        # cv2.drawContours(img_trans2, r_cnt, -1, (0, 0, 255), 2)
         # 把所有找到的轮廓，给标记出来
         sel_cts = []
         for cxx in r_cnt:
@@ -131,7 +129,7 @@ class Answer(object):
                 cv2.rectangle(img_trans2, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # 把每个选项，保存下来
                 sel_cts.append([x, y, w, h])
-        self.show_img("sel_point", img_trans2, True)
+        # cv2.imshow("sel_point", img_trans2)
         print("sel_cts========", len(sel_cts))
         cv2.imwrite(self.points_path, img_trans2)
         return sel_cts
@@ -185,11 +183,25 @@ class Answer(object):
         elif percent < 1:
             return "D"
 
-    def show_img(self, title, img, wait=False):
+    def show_img(self, title, img):
         cv2.imshow(title, img)
-        if wait: cv2.waitKey(0)
+        cv2.waitKey(0)
+
+    def create_trackbar(self,res,img):
+        cv2.namedWindow('tracks')
+        cv2.createTrackbar("key0", "tracks", 1, 300, lambda x: None)
+        cv2.createTrackbar("key1", "tracks", 200, 200, lambda x: None)
+        while True:
+            key0 = cv2.getTrackbarPos("key0", "tracks")
+            key1 = cv2.getTrackbarPos("key1", "tracks")
+            cv2.imshow("circle", img)
+            k = cv2.waitKey(1)
+            if k == 27:
+                break
 
 
 if __name__ == '__main__':
-    answer = Answer("t4.jpg")
+    answer = AnswerTest("t4.jpg")
     answer.start()
+    # now_time = time.time()
+    # print(int(now_time))
