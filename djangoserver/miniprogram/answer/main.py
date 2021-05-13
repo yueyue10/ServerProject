@@ -8,10 +8,13 @@ from imutils.perspective import four_point_transform
 from answer.ocr_sdk import OcrSdk
 
 # 在答题卡涂选答案参数
-hor_space = 20  # 横向间距15
+hor_space = 16  # 横向间距15
 hor_que_space = 15  # 答案单个横向间距
-ver_space = 20  # 纵向间距15
-ver_que_space = 45  # 答案块纵向间距
+ver_space = 26  # 纵向间距15
+ver_que_space = 39  # 答案块纵向间距
+# 答题卡边缘参数
+start_x_margin = 2
+start_y_margin = 15
 # 在答题卡输入区域参数
 ver_per = 51 / 138
 hor_per = 204 / 362
@@ -33,10 +36,10 @@ class Answer(object):
     def start(self):
         ans_list = []  # 选择的题目和答案
         gray_trans, img_trans = self.read_img()
-        ans_trans, input_trans = self.transform_again(gray_trans, img_trans)
+        ans_trans, input_trans, img_trans2 = self.transform_again(gray_trans, img_trans)
         texts = self.get_input_text(input_trans)
-        sel_cts = self.get_sel_point(ans_trans, img_trans)
-        card_list = self.get_card_list()  # 答题卡区域
+        sel_cts = self.get_sel_point(ans_trans, img_trans2)
+        card_list = self.get_card_list(ans_trans)  # 答题卡区域
         for que_item in sel_cts:
             ans_item = self.compute_score(que_item, ans_trans, card_list)
             ans_list.append(ans_item)
@@ -115,22 +118,25 @@ class Answer(object):
         input_four_points = [[0, 0], [mx, 0], [0, y + h], [mx, y + h]]  # 输入框定位四点
         # 6.再次进行透视转换
         ans_trans = four_point_transform(gray_trans, np.array(ans_four_points))
+        img_trans2 = four_point_transform(img_trans, np.array(ans_four_points))
         input_trans = four_point_transform(img_trans, np.array(input_four_points))
-        return ans_trans, input_trans
+        return ans_trans, input_trans, img_trans2
 
     # 获取输入的文字
     def get_input_text(self, img_trans2):
+        self.show_img("get_input_text", img_trans2)
         mhei, mwid, _ = img_trans2.shape
         print("img_trans2.shape", img_trans2.shape)  # 138, 362  204 51
         # 裁剪输入图片
         input_img = img_trans2[0:int(ver_per * mhei), 0:int(hor_per * mwid)]
-        self.show_img("input_img", input_img, True)
+        self.show_img("input_img", input_img)
         ocr = OcrSdk()
         texts = ocr.read_text_cv(input_img)
         return texts
 
     # 获取选中的答案
     def get_sel_point(self, gray_trans2, img_trans2):
+        self.show_img("get_sel_point", gray_trans2)
         thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 17, 25)
         self.show_img("ostu2", thresh2)
         r_image, r_cnt, r_hierarchy = cv2.findContours(thresh2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -143,11 +149,11 @@ class Answer(object):
             # 通过矩形，标记每一个指定的轮廓
             x, y, w, h = cv2.boundingRect(cxx)
             ar = w / float(h)
-            if w > 7 and ar > 1.7:
+            if (w >= 9 or h >= 5) and w < 20:
                 cv2.rectangle(img_trans2, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # 把每个选项，保存下来
                 sel_cts.append([x, y, w, h])
-        self.show_img("sel_point", img_trans2, True)
+        self.show_img("sel_point", img_trans2)
         print("sel_cts========", len(sel_cts))
         cv2.imwrite(self.points_path, img_trans2)
         return sel_cts
@@ -160,8 +166,6 @@ class Answer(object):
         cy = y + h / 2  # 中心y坐标
         # 便于调试，显示当前题目及答案
         cv2.rectangle(img_trans2, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        # cv2.imshow("ox_1", img_trans2)
-        # print("key_list", key_list)
         choose_que = []
         for coo in card_list:
             x, y = coo['value']
@@ -174,16 +178,14 @@ class Answer(object):
         return choose_que
 
     @staticmethod
-    def get_card_list():
+    def get_card_list(ans_trans):
         card_list = []
         for j in range(5):
             for i in range(20):
                 hor_space_num = i // 5 + 1  # 所在横向块数
                 hor_piece_num = (i + 1) % 5  # 所在横向份数
-                start_x = (hor_space_num - 1) * hor_space + hor_que_space * i
-                # if i == 5 and j == 0: print("hor_", hor_space_num, hor_piece_num, start_x)  # 横向的第几块，第几份
-                start_y = j * ver_space + ver_que_space * j
-                # if i == 0 and j == 4: print("纵向的第{}块，y坐标{}".format(j + 1, start_y))  # 纵向的第几块，第几份
+                start_x = (hor_space_num - 1) * hor_space + hor_que_space * i + start_x_margin
+                start_y = (ver_space + ver_que_space) * j + start_y_margin
                 card_list.append({"key": j * 20 + (i + 1), "value": [start_x, start_y]})
         return card_list
 
@@ -202,8 +204,7 @@ class Answer(object):
             return "D"
 
     def show_img(self, title, img, wait=False):
-        cv2.imshow(title, img)
-        if wait: cv2.waitKey(0)
+        pass
 
 
 if __name__ == '__main__':
