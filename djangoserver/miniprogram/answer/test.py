@@ -1,19 +1,23 @@
 # -*- coding: utf-8 -*-
-import time
-from operator import attrgetter, itemgetter
 import os
+
 import cv2
 import numpy as np
-from imutils import contours
 from imutils.perspective import four_point_transform
 
+from answer.ocr_sdk import OcrSdk
+
+# 在答题卡涂选答案参数
 hor_space = 20  # 横向间距15
 hor_que_space = 15  # 答案单个横向间距
 ver_space = 20  # 纵向间距15
 ver_que_space = 45  # 答案块纵向间距
+# 在答题卡输入区域参数
+ver_per = 51 / 138
+hor_per = 204 / 362
 
 
-class AnswerTest(object):
+class Answer(object):
     def __init__(self, path):
         print("cv2-version========", cv2.__version__)
         self.path = path
@@ -29,14 +33,15 @@ class AnswerTest(object):
     def start(self):
         ans_list = []  # 选择的题目和答案
         gray_trans, img_trans = self.read_img()
-        gray_trans2, img_trans2 = self.transform_again(gray_trans, img_trans)
-        sel_cts = self.get_sel_point(gray_trans2, img_trans2)
+        ans_trans, input_trans = self.transform_again(gray_trans, img_trans)
+        texts = self.get_input_text(input_trans)
+        sel_cts = self.get_sel_point(ans_trans, img_trans)
         card_list = self.get_card_list()  # 答题卡区域
         for que_item in sel_cts:
-            ans_item = self.compute_score(que_item, img_trans2, card_list)
+            ans_item = self.compute_score(que_item, ans_trans, card_list)
             ans_list.append(ans_item)
         print("ans_list", ans_list)
-        return ans_list, self.points_file_name, self.file_name
+        return ans_list, texts, self.points_file_name, self.file_name
 
     # 读取图片，根据四个定位圆进行透视变换
     def read_img(self):
@@ -52,7 +57,7 @@ class AnswerTest(object):
         # 2.灰度化,就是去色（类似老式照片）
         gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
         # 3.霍夫变换圆检测-定位答题卡圆圈位置
-        circles = cv2.HoughCircles(gray.copy(), cv2.HOUGH_GRADIENT, 1, 300, param1=250, param2=15, minRadius=5,
+        circles = cv2.HoughCircles(gray.copy(), cv2.HOUGH_GRADIENT, 1, 200, param1=250, param2=15, minRadius=5,
                                    maxRadius=20)
         circles = np.round(circles[0, :]).astype('int')
         circles = sorted(circles, key=lambda x: x[1])  # 对y轴排序
@@ -85,7 +90,7 @@ class AnswerTest(object):
         gaussian_bulr = cv2.GaussianBlur(gray_trans, (5, 5), 0)
         self.show_img("gaussian", gaussian_bulr)
         edged = cv2.Canny(gaussian_bulr, 75, 100)  # 边缘检测,灰度值小于2参这个值的会被丢弃，大于3参这个值会被当成边缘，在中间的部分，自动检测
-        self.show_img("edged", edged,True)
+        self.show_img("edged", edged)
         # 1.寻找轮廓
         image, cts, hierarchy = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         # 2.将轮廓数据以{c:轮廓，peri:周长}dict形式存放到path_list里面
@@ -106,28 +111,39 @@ class AnswerTest(object):
         # print("rect.shape()", rect.shape)
         my, mx = gray_trans.shape
         # 5.利用轮廓坐标组成新的透视定位4坐标点
-        four_points = [[0, y + h], [mx, y + h], [0, my], [mx, my]]
+        ans_four_points = [[0, y + h], [mx, y + h], [0, my], [mx, my]]  # 答案定位四点
+        input_four_points = [[0, 0], [mx, 0], [0, y + h], [mx, y + h]]  # 输入框定位四点
         # 6.再次进行透视转换
-        gray_trans2 = four_point_transform(gray_trans, np.array(four_points))
-        img_trans2 = four_point_transform(img_trans, np.array(four_points))
-        self.show_img("img_trans2", img_trans2)
-        return gray_trans2, img_trans2
+        ans_trans = four_point_transform(gray_trans, np.array(ans_four_points))
+        input_trans = four_point_transform(img_trans, np.array(input_four_points))
+        return ans_trans, input_trans
+
+    # 获取输入的文字
+    def get_input_text(self, img_trans2):
+        mhei, mwid, _ = img_trans2.shape
+        print("img_trans2.shape", img_trans2.shape)  # 138, 362  204 51
+        # 裁剪输入图片
+        input_img = img_trans2[0:int(ver_per * mhei), 0:int(hor_per * mwid)]
+        self.show_img("input_img", input_img, True)
+        ocr = OcrSdk()
+        texts = ocr.read_text_cv(input_img)
+        return texts
 
     # 获取选中的答案
     def get_sel_point(self, gray_trans2, img_trans2):
         thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 17, 25)
-        self.show_img("ostu2", thresh2, True)
+        self.show_img("ostu2", thresh2)
         r_image, r_cnt, r_hierarchy = cv2.findContours(thresh2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("找到轮廓个数----------------：", len(r_cnt))
         # 使用红色标记所有的轮廓
-        # cv2.drawContours(img_trans2, r_cnt, -1, (0, 0, 255), 2)
+        cv2.drawContours(img_trans2, r_cnt, -1, (0, 0, 255), 2)
         # 把所有找到的轮廓，给标记出来
         sel_cts = []
         for cxx in r_cnt:
             # 通过矩形，标记每一个指定的轮廓
             x, y, w, h = cv2.boundingRect(cxx)
             ar = w / float(h)
-            if 10 > w >= 5:
+            if w > 7 and ar > 1.7:
                 cv2.rectangle(img_trans2, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # 把每个选项，保存下来
                 sel_cts.append([x, y, w, h])
@@ -152,7 +168,7 @@ class AnswerTest(object):
             # print("coo", x, y)
             if x + hor_que_space > cx > x and y + ver_que_space > cy > y:
                 choose_ans = self.get_answer(cy - y, ver_que_space)
-                print("题目{},答案{}".format(coo['key'], choose_ans))
+                # print("题目{},答案{}".format(coo['key'], choose_ans))
                 choose_que = [coo['key'], choose_ans]
                 break
         return choose_que
@@ -189,22 +205,7 @@ class AnswerTest(object):
         cv2.imshow(title, img)
         if wait: cv2.waitKey(0)
 
-    def create_trackbar(self, res):
-        cv2.namedWindow('tracks')
-        cv2.createTrackbar("key0", "tracks", 75, 300, lambda x: None)
-        cv2.createTrackbar("key1", "tracks", 200, 200, lambda x: None)
-        while True:
-            key0 = cv2.getTrackbarPos("key0", "tracks")
-            key1 = cv2.getTrackbarPos("key1", "tracks")
-            edged = cv2.Canny(res, key0, key1)  # 边缘检测,灰度值小于2参这个值的会被丢弃，大于3参这个值会被当成边缘，在中间的部分，自动检测
-            self.show_img("edged", edged)
-            k = cv2.waitKey(1)
-            if k == 27:
-                break
-
 
 if __name__ == '__main__':
-    answer = AnswerTest("t5.jpg")
+    answer = Answer("../../media/images/mini_t7.jpg")
     answer.start()
-    # now_time = time.time()
-    # print(int(now_time))

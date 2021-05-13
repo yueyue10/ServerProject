@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-import time
-from operator import attrgetter, itemgetter
 import os
+
 import cv2
 import numpy as np
-from imutils import contours
 from imutils.perspective import four_point_transform
+
 from answer.ocr_sdk import OcrSdk
 
 # 在答题卡涂选答案参数
@@ -208,5 +207,5 @@ class Answer(object):
 
 
 if __name__ == '__main__':
-    answer = Answer("t4.jpg")
+    answer = Answer("../../media/images/mini_t7.jpg")
     answer.start()
