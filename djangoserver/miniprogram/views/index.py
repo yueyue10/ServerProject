@@ -27,7 +27,7 @@ def upload(request):
         file_path = os.path.join(settings.MEDIA_ROOT, picture.image.url)
         print("file_path============", file_path)
         answer = Answer(file_path)
-        ans_list, points_name, file_name = answer.start()
+        ans_list, texts, points_name, file_name = answer.start()
         ans_num = len(ans_list)
         return render(request, 'upload.html',
                       {"imgName": file_name, "ans_list": ans_list, "ans_num": ans_num, "points_name": points_name})
@@ -44,11 +44,12 @@ def upload_img(request):
         file_path = os.path.join(settings.MEDIA_ROOT, picture.image.url)
         print("file_path============", file_path)
         answer = Answer(file_path)
-        ans_list, points_name, file_name = answer.start()
+        ans_list, texts, points_name, file_name = answer.start()
         ans_num = len(ans_list)
         img_path = os.path.join(local_path, file_name)
         points_path = os.path.join(local_path, points_name)
-        data = {"answers": ans_list, "ans_num": ans_num, "img_path": img_path, "points_path": points_path}
+        data = {"answers": ans_list, "ans_num": ans_num, "img_path": img_path,
+                "points_path": points_path, "texts": texts}
         return result.success(data)
         file = request.FILES['image_input']
         return HttpResponse(file, content_type="image/jpeg")
