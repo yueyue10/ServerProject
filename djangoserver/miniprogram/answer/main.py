@@ -84,7 +84,7 @@ class Answer(object):
     def transform_again(self, gray_trans, img_trans):
         gaussian_bulr = cv2.GaussianBlur(gray_trans, (5, 5), 0)
         self.show_img("gaussian", gaussian_bulr)
-        edged = cv2.Canny(gaussian_bulr, 75, 200)  # 边缘检测,灰度值小于2参这个值的会被丢弃，大于3参这个值会被当成边缘，在中间的部分，自动检测
+        edged = cv2.Canny(gaussian_bulr, 75, 100)  # 边缘检测,灰度值小于2参这个值的会被丢弃，大于3参这个值会被当成边缘，在中间的部分，自动检测
         self.show_img("edged", edged)
         # 1.寻找轮廓
         image, cts, hierarchy = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)

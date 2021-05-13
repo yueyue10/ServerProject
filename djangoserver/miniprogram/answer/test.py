@@ -52,7 +52,7 @@ class AnswerTest(object):
         # 2.灰度化,就是去色（类似老式照片）
         gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
         # 3.霍夫变换圆检测-定位答题卡圆圈位置
-        circles = cv2.HoughCircles(gray.copy(), cv2.HOUGH_GRADIENT, 1, 200, param1=250, param2=15, minRadius=5,
+        circles = cv2.HoughCircles(gray.copy(), cv2.HOUGH_GRADIENT, 1, 300, param1=250, param2=15, minRadius=5,
                                    maxRadius=20)
         circles = np.round(circles[0, :]).astype('int')
         circles = sorted(circles, key=lambda x: x[1])  # 对y轴排序
@@ -84,8 +84,8 @@ class AnswerTest(object):
     def transform_again(self, gray_trans, img_trans):
         gaussian_bulr = cv2.GaussianBlur(gray_trans, (5, 5), 0)
         self.show_img("gaussian", gaussian_bulr)
-        edged = cv2.Canny(gaussian_bulr, 75, 200)  # 边缘检测,灰度值小于2参这个值的会被丢弃，大于3参这个值会被当成边缘，在中间的部分，自动检测
-        self.show_img("edged", edged)
+        edged = cv2.Canny(gaussian_bulr, 75, 100)  # 边缘检测,灰度值小于2参这个值的会被丢弃，大于3参这个值会被当成边缘，在中间的部分，自动检测
+        self.show_img("edged", edged,True)
         # 1.寻找轮廓
         image, cts, hierarchy = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         # 2.将轮廓数据以{c:轮廓，peri:周长}dict形式存放到path_list里面
@@ -115,8 +115,7 @@ class AnswerTest(object):
 
     # 获取选中的答案
     def get_sel_point(self, gray_trans2, img_trans2):
-        self.create_trackbar(gray_trans2)
-        thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 11, 54)
+        thresh2 = cv2.adaptiveThreshold(gray_trans2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 17, 25)
         self.show_img("ostu2", thresh2, True)
         r_image, r_cnt, r_hierarchy = cv2.findContours(thresh2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         print("找到轮廓个数----------------：", len(r_cnt))
@@ -132,7 +131,7 @@ class AnswerTest(object):
                 cv2.rectangle(img_trans2, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # 把每个选项，保存下来
                 sel_cts.append([x, y, w, h])
-        # cv2.imshow("sel_point", img_trans2)
+        self.show_img("sel_point", img_trans2, True)
         print("sel_cts========", len(sel_cts))
         cv2.imwrite(self.points_path, img_trans2)
         return sel_cts
@@ -190,22 +189,22 @@ class AnswerTest(object):
         cv2.imshow(title, img)
         if wait: cv2.waitKey(0)
 
-    def create_trackbar(self,res):
+    def create_trackbar(self, res):
         cv2.namedWindow('tracks')
-        cv2.createTrackbar("key0", "tracks", 17, 300, lambda x: None)
-        cv2.createTrackbar("key1", "tracks", 25, 200, lambda x: None)
+        cv2.createTrackbar("key0", "tracks", 75, 300, lambda x: None)
+        cv2.createTrackbar("key1", "tracks", 200, 200, lambda x: None)
         while True:
             key0 = cv2.getTrackbarPos("key0", "tracks")
             key1 = cv2.getTrackbarPos("key1", "tracks")
-            thresh2 = cv2.adaptiveThreshold(res, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, key0, key1)
-            cv2.imshow("thresh2", thresh2)
+            edged = cv2.Canny(res, key0, key1)  # 边缘检测,灰度值小于2参这个值的会被丢弃，大于3参这个值会被当成边缘，在中间的部分，自动检测
+            self.show_img("edged", edged)
             k = cv2.waitKey(1)
             if k == 27:
                 break
 
 
 if __name__ == '__main__':
-    answer = AnswerTest("t4.jpg")
+    answer = AnswerTest("t5.jpg")
     answer.start()
     # now_time = time.time()
     # print(int(now_time))
