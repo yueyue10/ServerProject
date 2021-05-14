@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from imutils.perspective import four_point_transform
 
-from answer.ocr_sdk import OcrSdk
+from miniprogram.answer.ocr_sdk import OcrSdk
 
 # 在答题卡涂选答案参数
 hor_space = 16  # 横向间距15
